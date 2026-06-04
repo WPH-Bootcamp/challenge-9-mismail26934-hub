@@ -1,11 +1,20 @@
+import { useEffect } from 'react';
 import { Check } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useFavoriteToastStore } from '@/store/favoriteToastStore';
 
-interface FavoriteToastProps {
-  open: boolean;
-}
+const TOAST_DURATION_MS = 3000;
 
-export function FavoriteToast({ open }: FavoriteToastProps) {
+export function FavoriteToast() {
+  const open = useFavoriteToastStore((s) => s.open);
+  const hide = useFavoriteToastStore((s) => s.hide);
+
+  useEffect(() => {
+    if (!open) return;
+    const timer = window.setTimeout(hide, TOAST_DURATION_MS);
+    return () => window.clearTimeout(timer);
+  }, [open, hide]);
+
   return (
     <AnimatePresence>
       {open && (
@@ -13,15 +22,20 @@ export function FavoriteToast({ open }: FavoriteToastProps) {
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -12 }}
-          transition={{ duration: 0.25 }}
-          className="pointer-events-none fixed left-1/2 top-20 z-[60] flex -translate-x-1/2 items-center gap-2 rounded-full border border-[#181D27] bg-[rgba(10,13,18,0.6)] px-4 py-2.5 text-sm font-medium text-foreground backdrop-blur-[20px] md:top-24"
+          transition={{ duration: 0.28, ease: 'easeOut' }}
+          className="pointer-events-none fixed left-1/2 top-[114px] z-[60] box-border flex h-[52px] w-[531px] max-w-[calc(100vw-2rem)] -translate-x-1/2 flex-row items-center justify-center gap-3 rounded-2xl bg-[rgba(0,0,0,0.25)] px-6 py-0 backdrop-blur-[20px]"
           role="status"
           aria-live="polite"
         >
-          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-foreground/10">
-            <Check className="h-4 w-4" />
+          <span
+            className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white"
+            aria-hidden
+          >
+            <Check className="h-4 w-4 text-black" strokeWidth={3} />
           </span>
-          Success Add to Favorites
+          <span className="whitespace-nowrap text-sm font-medium text-white">
+            Success Add to Favorites
+          </span>
         </motion.div>
       )}
     </AnimatePresence>

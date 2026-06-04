@@ -2,12 +2,7 @@ import { Link } from 'react-router-dom';
 import { Star } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { IMAGE_SIZES } from '@/lib/constants';
-import {
-  cn,
-  formatRating,
-  getImageUrl,
-  getMovieTitle,
-} from '@/lib/utils';
+import { cn, formatRating, getImageUrl, getMovieTitle } from '@/lib/utils';
 import type { Movie } from '@/types/movie';
 
 interface MovieCardProps {
@@ -15,6 +10,8 @@ interface MovieCardProps {
   index?: number;
   rank?: number;
   variant?: 'carousel' | 'grid';
+  /** Fade poster + metadata to black at bottom (New Release last row) */
+  fadeBottom?: boolean;
 }
 
 export function MovieCard({
@@ -22,6 +19,7 @@ export function MovieCard({
   index = 0,
   rank,
   variant = 'carousel',
+  fadeBottom = false,
 }: MovieCardProps) {
   const title = getMovieTitle(movie);
 
@@ -34,8 +32,13 @@ export function MovieCard({
       transition={{ delay: index * 0.05, duration: 0.35 }}
       className={`group relative ${widthClass}`}
     >
-      <Link to={`/movie/${movie.id}`} className="block">
-        <div className="relative overflow-hidden rounded-xl bg-muted">
+      <Link to={`/movie/${movie.id}`} className="relative block">
+        <div
+          className={cn(
+            'relative overflow-hidden bg-muted',
+            variant === 'grid' ? 'rounded-2xl' : 'rounded-xl'
+          )}
+        >
           <img
             src={getImageUrl(movie.poster_path, IMAGE_SIZES.poster.medium)}
             alt={title}
@@ -51,9 +54,7 @@ export function MovieCard({
         <h3
           className={cn(
             'mt-2 font-bold leading-tight text-foreground',
-            variant === 'carousel'
-              ? 'line-clamp-1 text-sm'
-              : 'line-clamp-2 text-sm'
+            variant === 'carousel' ? 'line-clamp-1 text-sm' : 'line-clamp-2 text-sm'
           )}
         >
           {title}
@@ -62,6 +63,12 @@ export function MovieCard({
           <Star className="h-3.5 w-3.5 fill-accent text-accent" />
           {formatRating(movie.vote_average)}
         </p>
+        {fadeBottom && (
+          <div
+            className="new-release-card-fade pointer-events-none absolute inset-x-0 bottom-0 top-[38%]"
+            aria-hidden
+          />
+        )}
       </Link>
     </motion.article>
   );

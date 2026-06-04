@@ -1,14 +1,13 @@
-import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Calendar, Heart } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 import starIcon from '@/assets/icon/star.svg';
 import videoIcon from '@/assets/icon/video.svg';
 import emojiHappyIcon from '@/assets/icon/emoji-happy.svg';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import { FavoriteCircleButton } from '@/components/ui/FavoriteCircleButton';
 import { PlayIcon } from '@/components/ui/PlayIcon';
 import { Skeleton } from '@/components/ui/skeleton';
-import { FavoriteToast } from '@/components/ui/FavoriteToast';
 import { DetailStatCard } from '@/components/movies/DetailStatCard';
 import { IMAGE_SIZES } from '@/lib/constants';
 import { useMovieCredits, useMovieDetails, useMovieVideos } from '@/hooks/useMovies';
@@ -26,19 +25,11 @@ export function MovieDetailPage() {
   const { id } = useParams<{ id: string }>();
   const movieId = Number(id);
   const { addToFavorites, removeFromFavorites, isFavorite } = useMovieStore();
-  const [toastOpen, setToastOpen] = useState(false);
-
   const { data: movie, isLoading, isError } = useMovieDetails(movieId);
   const credits = useMovieCredits(movieId);
   const videos = useMovieVideos(movieId);
 
   const trailer = videos.data?.results?.find((v) => v.site === 'YouTube' && v.type === 'Trailer');
-
-  useEffect(() => {
-    if (!toastOpen) return;
-    const timer = window.setTimeout(() => setToastOpen(false), 3000);
-    return () => window.clearTimeout(timer);
-  }, [toastOpen]);
 
   if (isLoading) {
     return <DetailSkeleton />;
@@ -67,13 +58,10 @@ export function MovieDetailPage() {
       return;
     }
     addToFavorites(movie);
-    setToastOpen(true);
   };
 
   return (
     <main className="w-full min-w-0 overflow-x-hidden pb-8">
-      <FavoriteToast open={toastOpen} />
-
       <section className="relative w-full min-w-0 bg-black md:min-h-[480px]">
         <div className="relative hidden w-full md:absolute md:inset-0 md:block md:h-full md:min-h-[480px]">
           <img
@@ -138,7 +126,7 @@ export function MovieDetailPage() {
                   />
                 </div>
 
-                <div className="mt-5 hidden grid-cols-3 gap-2 sm:gap-3 md:grid">
+                <div className="mt-5 hidden md:grid md:grid-cols-3 md:justify-items-center md:gap-5">
                   <DetailStats
                     voteAverage={movie.vote_average}
                     genre={primaryGenre}
@@ -232,16 +220,7 @@ function DetailActions({
       ) : (
         <div className="min-w-0 flex-1" />
       )}
-      <button
-        type="button"
-        onClick={onFavoriteClick}
-        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#181D27] bg-[rgba(10,13,18,0.6)] backdrop-blur-[20px] transition-colors hover:bg-[rgba(10,13,18,0.8)] md:h-[52px] md:w-[52px]"
-        aria-label={favorite ? 'Remove from favorites' : 'Add to favorites'}
-      >
-        <Heart
-          className={`h-5 w-5 ${favorite ? 'fill-primary text-primary' : 'text-foreground'}`}
-        />
-      </button>
+      <FavoriteCircleButton favorited={favorite} onClick={onFavoriteClick} />
     </div>
   );
 }
@@ -284,10 +263,10 @@ function DetailSkeleton() {
           <Skeleton className="h-11 flex-1 rounded-full" />
           <Skeleton className="h-11 w-11 shrink-0 rounded-full" />
         </div>
-        <div className="mt-4 hidden grid-cols-3 gap-2 md:grid">
-          <Skeleton className="h-[72px] rounded-xl" />
-          <Skeleton className="h-[72px] rounded-xl" />
-          <Skeleton className="h-[72px] rounded-xl" />
+        <div className="mt-4 hidden md:grid md:grid-cols-3 md:justify-items-center md:gap-5">
+          <Skeleton className="h-[146px] w-full max-w-[276px] rounded-2xl" />
+          <Skeleton className="h-[146px] w-full max-w-[276px] rounded-2xl" />
+          <Skeleton className="h-[146px] w-full max-w-[276px] rounded-2xl" />
         </div>
         <Skeleton className="mt-8 h-6 w-32" />
         <Skeleton className="mt-4 h-24 w-full" />

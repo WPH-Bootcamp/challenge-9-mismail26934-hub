@@ -9,9 +9,12 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: "rounded-full bg-[#961200] p-2 text-white hover:bg-[#7f0f00]",
+        primary:
+          "rounded-full bg-[#961200] font-bold text-white hover:bg-[#7f0f00]",
         secondary:
-          "box-border rounded-full border border-[#181D27] bg-[rgba(10,13,18,0.6)] p-2 text-white backdrop-blur-[20px] hover:bg-[rgba(10,13,18,0.8)]",
+          "box-border rounded-full border border-[#252B37] bg-black p-2 text-white hover:bg-white/5",
+        loadMore:
+          "box-border rounded-full border border-[#181D27] bg-[rgba(10,13,18,0.6)] font-semibold text-white backdrop-blur-[20px] hover:bg-[rgba(10,13,18,0.8)]",
         default: "bg-primary text-primary-foreground hover:bg-primary/90",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
@@ -25,7 +28,9 @@ const buttonVariants = cva(
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
-        hero: "h-11 w-full min-w-0 max-w-full self-stretch rounded-full md:h-[52px] md:w-[230px] md:max-w-none md:shrink-0 md:self-auto",
+        hero: "h-11 w-full min-w-0 max-w-full gap-3 self-stretch rounded-full px-6 text-sm md:h-[52px] md:w-[230px] md:max-w-none md:shrink-0 md:self-auto md:gap-3 md:px-8 md:text-base",
+        loadMore:
+          "h-[52px] w-full max-w-[361px] gap-2 px-4 text-base leading-6 md:w-[230px] md:max-w-none",
       },
     },
     defaultVariants: {

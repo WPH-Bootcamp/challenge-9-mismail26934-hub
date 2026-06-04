@@ -43,12 +43,14 @@ export function HeroSection({ movie, isLoading }: HeroSectionProps) {
 
   if (isLoading || !movie) {
     return (
-      <section className="relative h-[345px] w-full min-w-0 overflow-hidden md:h-[520px] lg:h-[600px]">
+      <section className="relative min-h-[520px] w-full min-w-0 overflow-hidden md:h-[600px] md:min-h-0">
         <Skeleton className="absolute inset-0 rounded-none" />
-        <div className="container-page relative mx-auto flex h-full flex-col justify-end pb-8 pt-20 max-md:max-w-[393px] md:pb-14 md:pt-24">
-          <Skeleton className="mb-3 h-8 w-3/4 max-w-lg" />
-          <Skeleton className="mb-4 h-14 w-full max-w-xl" />
-          <div className="flex w-full min-w-0 flex-col gap-2 md:max-w-none md:flex-row md:gap-3">
+        <div className="hero-inner container-page relative mx-auto flex h-full min-h-[520px] flex-col pb-8 max-md:max-w-[393px] md:min-h-0 md:pb-14 md:pt-24">
+          <div className="hero-text w-full min-w-0">
+            <Skeleton className="h-8 w-3/4 max-w-lg" />
+            <Skeleton className="h-[120px] w-full max-w-xl md:h-16" />
+          </div>
+          <div className="mt-6 flex w-full min-w-0 flex-col gap-2 md:mt-0 md:max-w-none md:flex-row md:gap-3">
             <Skeleton className="h-11 w-full rounded-full md:h-[52px] md:w-[230px]" />
             <Skeleton className="h-11 w-full rounded-full md:h-[52px] md:w-[230px]" />
           </div>
@@ -61,27 +63,29 @@ export function HeroSection({ movie, isLoading }: HeroSectionProps) {
   const backdrop = getImageUrl(movie.backdrop_path, IMAGE_SIZES.backdrop.large);
 
   return (
-    <section className="relative h-[345px] w-full min-w-0 overflow-hidden md:h-[520px] lg:h-[600px]">
+    <section className="relative min-h-[520px] w-full min-w-0 overflow-hidden md:h-[600px] md:min-h-0">
       <img src={backdrop} alt="" className="absolute inset-0 h-full w-full object-cover" />
       <div className="hero-gradient-side absolute inset-0 hidden md:block" />
       <div className="hero-gradient absolute inset-0" />
 
-      <div className="container-page relative mx-auto flex h-full flex-col justify-end pb-8 pt-20 max-md:max-w-[393px] md:pb-14 md:pt-24">
+      <div className="hero-inner container-page relative mx-auto flex h-full min-h-[520px] flex-col pb-8 max-md:max-w-[393px] md:min-h-0 md:pb-14 md:pt-24">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="w-full min-w-0 max-w-2xl"
         >
-          <h1 className="break-words text-2xl font-bold leading-tight text-foreground md:text-4xl lg:text-5xl">
-            {title}
-          </h1>
+          <div className="hero-text">
+            <h1 className="break-words text-2xl font-bold leading-tight text-foreground md:text-4xl lg:text-5xl">
+              {title}
+            </h1>
 
-          <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-foreground/90 md:line-clamp-4 md:text-base">
-            {movie.overview}
-          </p>
+            <p className="hero-text__description line-clamp-4 md:line-clamp-4">
+              {movie.overview}
+            </p>
+          </div>
 
-          <div className="mt-6">
+          <div className="mt-6 md:mt-12">
             <HeroActions movieId={movie.id} trailerKey={trailerKey} />
           </div>
         </motion.div>

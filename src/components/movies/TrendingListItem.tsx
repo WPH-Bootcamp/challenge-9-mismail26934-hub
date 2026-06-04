@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { MovieCard } from '@/components/movies/MovieCard';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button';
 import {
   Carousel,
   CarouselContent,
@@ -58,9 +60,7 @@ export function TrendingListItem({
         )}
 
         {isError && (
-          <p className="text-sm text-destructive">
-            Failed to load movies. Please try again later.
-          </p>
+          <p className="text-sm text-destructive">Failed to load movies. Please try again later.</p>
         )}
 
         {!isLoading && !isError && movies.length === 0 && (
@@ -88,15 +88,9 @@ export function TrendingListItem({
               >
                 <div>
                   {title && (
-                    <h2 className="text-xl font-bold text-foreground md:text-2xl">
-                      {title}
-                    </h2>
+                    <h2 className="text-xl font-bold text-foreground md:text-2xl">{title}</h2>
                   )}
-                  {subtitle && (
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      {subtitle}
-                    </p>
-                  )}
+                  {subtitle && <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>}
                 </div>
                 {!isOverlayNav && (
                   <div className="flex shrink-0 gap-2">
@@ -107,24 +101,14 @@ export function TrendingListItem({
               </motion.div>
             )}
 
-            <div
-              className={cn(
-                'relative min-w-0 overflow-hidden',
-                isOverlayNav && 'md:-mr-4'
-              )}
-            >
+            <div className={cn('relative min-w-0 overflow-hidden', isOverlayNav && 'md:-mr-4')}>
               <CarouselContent className="-ml-4">
                 {movies.map((movie, index) => (
                   <CarouselItem
                     key={movie.id}
                     className="basis-1/2 pl-4 md:basis-[180px] lg:basis-[200px]"
                   >
-                    <MovieCard
-                      movie={movie}
-                      index={index}
-                      rank={index + 1}
-                      variant="carousel"
-                    />
+                    <MovieCard movie={movie} index={index} rank={index + 1} variant="carousel" />
                   </CarouselItem>
                 ))}
               </CarouselContent>
@@ -164,6 +148,76 @@ export function TrendingListItem({
               )}
             </div>
           </Carousel>
+        )}
+      </div>
+    </section>
+  );
+}
+
+const INITIAL_ROWS = 3;
+const DESKTOP_COLUMNS = 5;
+const PAGE_SIZE = INITIAL_ROWS * DESKTOP_COLUMNS;
+
+interface NewReleaseSectionProps {
+  movies: Movie[];
+  isLoading?: boolean;
+  isError?: boolean;
+}
+
+export function NewReleaseSection({ movies, isLoading, isError }: NewReleaseSectionProps) {
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const visibleMovies = movies.slice(0, visibleCount);
+  const hasMore = visibleCount < movies.length;
+
+  return (
+    <section id="new-release" className="overflow-x-hidden py-8 md:py-12">
+      <div className="container-page mx-auto w-full min-w-0 max-md:max-w-[393px]">
+        <motion.h2
+          initial={{ opacity: 0, x: -12 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="mb-5 text-xl font-bold text-foreground md:mb-6 md:text-2xl"
+        >
+          New Release
+        </motion.h2>
+
+        {isLoading && (
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 lg:gap-5">
+            {Array.from({ length: PAGE_SIZE }).map((_, i) => (
+              <Skeleton key={i} className="aspect-[2/3] w-full rounded-xl" />
+            ))}
+          </div>
+        )}
+
+        {isError && (
+          <p className="text-sm text-destructive">Failed to load movies. Please try again later.</p>
+        )}
+
+        {!isLoading && !isError && movies.length === 0 && (
+          <p className="text-sm text-muted-foreground">No movies found.</p>
+        )}
+
+        {!isLoading && !isError && movies.length > 0 && (
+          <>
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 lg:gap-5">
+              {visibleMovies.map((movie, index) => (
+                <MovieCard key={movie.id} movie={movie} index={index} variant="grid" />
+              ))}
+            </div>
+
+            {hasMore && (
+              <div className="mt-8 flex justify-center md:mt-10">
+                <Button
+                  type="button"
+                  variant="loadMore"
+                  size="loadMore"
+                  onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
+                >
+                  Load More
+                </Button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </section>

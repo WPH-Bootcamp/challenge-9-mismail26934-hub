@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { STORAGE_KEYS } from '@/lib/constants';
+import { useFavoriteToastStore } from '@/store/favoriteToastStore';
 import type { Movie } from '@/types/movie';
 
 interface MovieStore {
@@ -18,6 +19,7 @@ export const useMovieStore = create<MovieStore>()(
       addToFavorites: (movie) =>
         set((state) => {
           if (state.favorites.some((m) => m.id === movie.id)) return state;
+          useFavoriteToastStore.getState().show();
           return { favorites: [...state.favorites, movie] };
         }),
       removeFromFavorites: (id) =>

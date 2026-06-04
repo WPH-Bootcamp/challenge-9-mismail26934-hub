@@ -9,14 +9,15 @@ import { useMovieStore } from '@/store/movieStore';
 import type { Movie } from '@/types/movie';
 import starIcon from '@/assets/icon/star.svg';
 
-interface FavoriteListItemProps {
+interface SearchResultListItemProps {
   movie: Movie;
 }
 
-export function FavoriteListItem({ movie }: FavoriteListItemProps) {
-  const { removeFromFavorites } = useMovieStore();
+export function SearchResultListItem({ movie }: SearchResultListItemProps) {
+  const { toggleFavorite, isFavorite } = useMovieStore();
   const videos = useMovieVideos(movie.id);
   const title = getMovieTitle(movie);
+  const favorited = isFavorite(movie.id);
 
   const trailer = videos.data?.results?.find((v) => v.site === 'YouTube' && v.type === 'Trailer');
 
@@ -70,8 +71,8 @@ export function FavoriteListItem({ movie }: FavoriteListItemProps) {
         </div>
 
         <FavoriteCircleButton
-          favorited
-          onClick={() => removeFromFavorites(movie.id)}
+          favorited={favorited}
+          onClick={() => toggleFavorite(movie)}
           className="hidden md:flex"
         />
       </div>
@@ -91,7 +92,7 @@ export function FavoriteListItem({ movie }: FavoriteListItemProps) {
         ) : (
           <div className="min-w-0 flex-1" />
         )}
-        <FavoriteCircleButton favorited onClick={() => removeFromFavorites(movie.id)} />
+        <FavoriteCircleButton favorited={favorited} onClick={() => toggleFavorite(movie)} />
       </div>
     </article>
   );

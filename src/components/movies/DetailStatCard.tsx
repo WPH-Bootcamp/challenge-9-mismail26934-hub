@@ -20,8 +20,7 @@ export function DetailStatCard({
   return (
     <div
       className={cn(
-        'flex min-w-0 flex-1 flex-col items-center gap-1.5 rounded-xl border border-[#181D27] bg-black px-2 py-3 text-center',
-        'md:items-center md:gap-2 md:px-4 md:py-3 md:text-left md:bg-[rgba(10,13,18,0.6)] md:backdrop-blur-[20px]',
+        'box-border flex h-[146px] w-full max-w-[276px] flex-col items-center justify-center gap-2 rounded-2xl border border-[#252B37] bg-black p-5 text-center',
         className
       )}
     >
@@ -29,10 +28,10 @@ export function DetailStatCard({
         src={iconSrc}
         alt={iconAlt}
         aria-hidden={!iconAlt}
-        className={cn('h-5.5 w-5.5 md:h-7.25 md:w-7.25 shrink-0 object-contain', iconClassName)}
+        className={cn('h-6 w-6 shrink-0 object-contain', iconClassName)}
       />
-      <span className="text-xs font-medium text-muted-foreground">{label}</span>
-      <p className="text-sm font-bold text-foreground">{value}</p>
+      <span className="text-sm font-medium leading-none text-[#fdfdfd]">{label}</span>
+      <p className="text-base font-bold leading-none text-[#fdfdfd]">{value}</p>
     </div>
   );
 }

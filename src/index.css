@@ -85,4 +85,125 @@
   .hero-gradient-side {
     background: linear-gradient(90deg, #000000 0%, rgba(0, 0, 0, 0.4) 40%, rgba(0, 0, 0, 0) 100%);
   }
+
+  /* Hero inner — mobile: 159px below navbar (h-16 = 64px) */
+  @media (width < 48rem) {
+    .hero-inner {
+      padding-top: calc(4rem + 159px);
+      justify-content: flex-start;
+    }
+
+    .hero-text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      width: 100%;
+      max-width: 361px;
+      min-height: 182px;
+    }
+  }
+
+  @media (width >= 48rem) {
+    .hero-inner {
+      justify-content: flex-end;
+    }
+
+    .hero-text {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+  }
+
+  .hero-text__description {
+    font-family: 'Poppins', system-ui, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 30px;
+    color: #a4a7ae;
+  }
+
+  /* Load More — Figma 22412:1929 */
+  .btn-load-more {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    height: 52px;
+    width: 100%;
+    max-width: 361px;
+    padding: 8px 16px;
+    border-radius: 9999px;
+    border: 1px solid #181d27;
+    background: rgba(10, 13, 18, 0.6);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    color: #ffffff;
+  }
+
+  @media (width >= 48rem) {
+    .btn-load-more {
+      width: 230px;
+      max-width: none;
+    }
+  }
+
+  /* New Release — Load More (mobile: 89px / desktop: 134px from section bottom) */
+  .new-release-load-more {
+    position: absolute;
+    bottom: 89px;
+    left: 50%;
+    z-index: 20;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-inline: 1rem;
+    transform: translateX(-50%);
+  }
+
+  @media (width >= 48rem) {
+    .new-release-load-more {
+      bottom: 134px;
+      padding-inline: 0;
+    }
+  }
+
+  /* New Release — bottom fade to solid black (Figma 22421:4563 mobile) */
+  .new-release-bottom-fade {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 5;
+    width: 100%;
+    height: 220px;
+    border-radius: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.35) 38%,
+      #000000 72%,
+      #000000 100%
+    );
+  }
+
+  /* New Release — desktop fade (Figma 22412:2053) */
+  @media (width >= 48rem) {
+    .new-release-bottom-fade {
+      height: 496px;
+      background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 0.25) 25%,
+        rgba(0, 0, 0, 0.7) 55%,
+        #000000 79.44%,
+        #000000 100%
+      );
+    }
+  }
 }

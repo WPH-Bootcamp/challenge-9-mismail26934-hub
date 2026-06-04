@@ -46,3 +46,10 @@ export const useMovieVideos = (id: number) =>
     queryFn: () => movieService.getMovieVideos(id),
     enabled: id > 0,
   });
+
+export const useSearchMovies = (query: string, page = 1) =>
+  useQuery({
+    queryKey: QUERY_KEYS.movies.search(query, page),
+    queryFn: () => movieService.searchMovies(query, page),
+    enabled: query.trim().length > 0,
+  });
