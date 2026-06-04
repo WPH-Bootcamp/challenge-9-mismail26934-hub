@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { BrandLogo } from '@/components/layout/BrandLogo';
 import { SearchBar } from '@/components/layout/SearchBar';
-import searchIcon from '@/assets/images/search.png';
+import arrowLeftIcon from '@/assets/icon/arrow-left.svg';
+import menuCloseIcon from '@/assets/icon/menu-close.svg';
+import navbarSearchIcon from '@/assets/icon/navbar-search.svg';
+import menuHamburgerIcon from '@/assets/icon/menu-hamburger.svg';
 
 const navLinks = [
   { label: 'Home', to: '/' },
@@ -49,6 +51,26 @@ function NavLink({
   );
 }
 
+function MobileMenuNavLink({
+  label,
+  to,
+  onClick,
+}: {
+  label: string;
+  to: string;
+  onClick?: () => void;
+}) {
+  return (
+    <Link
+      to={to}
+      onClick={onClick}
+      className="p-2 text-base font-normal leading-[30px] text-white transition-opacity hover:opacity-80"
+    >
+      {label}
+    </Link>
+  );
+}
+
 const NAVBAR_BLUR = 'navbar-blur';
 const NAVBAR_BLACK = 'bg-[var(--color-background)]';
 
@@ -82,6 +104,15 @@ export function Header() {
     setMobileMenuOpen(false);
   }, [location.pathname, location.search]);
 
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [mobileMenuOpen]);
+
   const handleSearch = (query: string) => {
     navigate(`/?q=${encodeURIComponent(query)}`);
     setSearchOpen(false);
@@ -111,114 +142,141 @@ export function Header() {
       )}
     >
       {/* Mobile */}
-      <div className="mx-auto flex h-14 w-full min-w-0 max-w-[393px] items-center justify-between gap-4 md:hidden">
-        <Logo />
-
-        <div className="flex items-center gap-1">
-          {!mobileMenuOpen && (
-            <button
-              type="button"
-              onClick={() => {
-                setSearchOpen((open) => !open);
-                setMobileMenuOpen(false);
-              }}
-              className={cn(
-                'flex h-10 w-10 items-center justify-center rounded-full transition-colors',
-                searchOpen ? 'bg-white/10' : 'hover:bg-white/5'
-              )}
-              aria-label="Search"
-              aria-expanded={searchOpen}
-            >
-              <img src={searchIcon} alt="" aria-hidden width={20} height={20} className="h-5 w-5" />
-            </button>
+      {!mobileMenuOpen && (
+        <div
+          className={cn(
+            'mx-auto flex h-16 w-full min-w-0 max-w-[393px] items-center px-4 md:hidden',
+            searchOpen ? 'gap-4' : 'justify-between'
           )}
-          <button
-            type="button"
-            onClick={() => {
-              setMobileMenuOpen((open) => !open);
-              setSearchOpen(false);
-            }}
-            className="flex h-10 w-10 items-center justify-center rounded-full text-foreground hover:bg-white/5"
-            aria-label="Menu"
-            aria-expanded={mobileMenuOpen}
-          >
-            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+        >
+          {searchOpen ? (
+            <>
+              <button
+                type="button"
+                onClick={() => setSearchOpen(false)}
+                className="flex h-6 w-6 shrink-0 items-center justify-center transition-opacity hover:opacity-80"
+                aria-label="Close search"
+              >
+                <img
+                  src={arrowLeftIcon}
+                  alt=""
+                  aria-hidden
+                  width={24}
+                  height={24}
+                  className="h-6 w-6"
+                />
+              </button>
+              <SearchBar
+                size="small"
+                defaultQuery={searchQuery}
+                onSubmit={handleSearch}
+                onClear={handleClearSearch}
+                autoFocus
+                className="min-w-0 flex-1"
+              />
+            </>
+          ) : (
+            <>
+              <Logo className="gap-1" />
+              <div className="flex shrink-0 items-center gap-6">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchOpen(true);
+                    setMobileMenuOpen(false);
+                  }}
+                  className="flex h-6 w-6 items-center justify-center transition-opacity hover:opacity-80"
+                  aria-label="Search"
+                  aria-expanded={searchOpen}
+                >
+                  <img
+                    src={navbarSearchIcon}
+                    alt=""
+                    aria-hidden
+                    width={24}
+                    height={24}
+                    className="h-6 w-6"
+                  />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMobileMenuOpen(true)}
+                  className="flex h-6 w-6 items-center justify-center transition-opacity hover:opacity-80"
+                  aria-label="Menu"
+                  aria-expanded={mobileMenuOpen}
+                >
+                  <img
+                    src={menuHamburgerIcon}
+                    alt=""
+                    aria-hidden
+                    width={24}
+                    height={24}
+                    className="h-6 w-6"
+                  />
+                </button>
+              </div>
+            </>
+          )}
         </div>
-      </div>
+      )}
 
-      {/* Desktop */}
-      <div className="mx-auto hidden h-[72px] max-w-7xl items-center gap-10 px-8 md:flex lg:px-12">
-        <Logo />
-        <nav className="flex items-center gap-8">
-          {navLinks.map((link) => (
-            <NavLink key={link.label} label={link.label} to={link.to} />
-          ))}
-        </nav>
+      {/* Desktop — aligned with page container (Figma 22419:2721) */}
+      <div className="container-page hidden h-[72px] items-center justify-between gap-8 md:flex">
+        <div className="flex min-w-0 items-center gap-10">
+          <BrandLogo />
+          <nav className="flex items-center gap-8">
+            {navLinks.map((link) => (
+              <NavLink key={link.label} label={link.label} to={link.to} />
+            ))}
+          </nav>
+        </div>
         <SearchBar
           defaultQuery={searchQuery}
           onSubmit={handleSearch}
           onClear={handleClearSearch}
-          className="ml-auto max-w-[320px]"
+          className="w-full max-w-[320px] shrink-0"
         />
       </div>
 
-      {/* Mobile search */}
-      <AnimatePresence>
-        {searchOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className={cn(
-              'mx-auto w-full min-w-0 max-w-[393px] overflow-hidden border-t border-white/5 px-4 pb-4 pt-3 md:hidden',
-              NAVBAR_BLACK
-            )}
-          >
-            <SearchBar
-              defaultQuery={searchQuery}
-              onSubmit={handleSearch}
-              onClear={handleClearSearch}
-              autoFocus
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Mobile menu */}
+      {/* Mobile menu — full screen per Figma 22424:6780 */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <>
-            <motion.button
-              type="button"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-40 md:hidden"
-              aria-label="Close menu"
-              onClick={closeMobile}
-            />
-            <motion.nav
-              initial={{ opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.2 }}
-              className={cn('relative z-50 border-t border-white/5 md:hidden', NAVBAR_BLACK)}
-            >
-              <div className="mx-auto flex w-full max-w-[393px] flex-col gap-1 px-4 py-4">
-                {navLinks.map((link) => (
-                  <NavLink
-                    key={link.label}
-                    label={link.label}
-                    to={link.to}
-                    onClick={closeMobile}
-                    className="rounded-lg px-3 py-2.5"
-                  />
-                ))}
-              </div>
-            </motion.nav>
-          </>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-50 flex flex-col bg-black md:hidden"
+          >
+            <div className="mx-auto flex h-16 w-full max-w-[393px] shrink-0 items-center justify-between">
+              <Logo />
+              <button
+                type="button"
+                onClick={closeMobile}
+                className="flex h-6 w-6 items-center justify-center transition-opacity hover:opacity-80"
+                aria-label="Close menu"
+              >
+                <img
+                  src={menuCloseIcon}
+                  alt=""
+                  aria-hidden
+                  width={24}
+                  height={24}
+                  className="h-6 w-6"
+                />
+              </button>
+            </div>
+            <nav className="mx-auto flex w-full max-w-[393px] flex-col gap-4 px-4 pt-6">
+              {navLinks.map((link) => (
+                <MobileMenuNavLink
+                  key={link.label}
+                  label={link.label}
+                  to={link.to}
+                  onClick={closeMobile}
+                />
+              ))}
+            </nav>
+          </motion.div>
         )}
       </AnimatePresence>
     </header>

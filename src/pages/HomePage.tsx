@@ -9,7 +9,7 @@ export function HomePage() {
   const isLoading = nowPlayingQuery.isLoading || popularQuery.isLoading;
 
   return (
-    <main className="overflow-x-hidden">
+    <main className="w-full min-w-0 overflow-x-hidden">
       <HeroSection movie={heroMovie} isLoading={isLoading} />
     </main>
   );

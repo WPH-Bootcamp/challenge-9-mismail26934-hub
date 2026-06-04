@@ -2,10 +2,11 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
-import searchIcon from '@/assets/images/search.png';
+import searchIcon from '@/assets/icon/search.svg';
+import searchCloseIcon from '@/assets/icon/search-close.svg';
+import searchCloseSmIcon from '@/assets/icon/search-close-sm.svg';
 
 const searchSchema = z.object({
   query: z.string().min(1, 'Enter a movie title').max(100),
@@ -13,26 +14,55 @@ const searchSchema = z.object({
 
 export type SearchFormValues = z.infer<typeof searchSchema>;
 
+export type SearchBarSize = 'large' | 'small';
+
 interface SearchBarProps {
   defaultQuery?: string;
   onSubmit: (query: string) => void;
   onClear?: () => void;
   autoFocus?: boolean;
+  size?: SearchBarSize;
   className?: string;
   inputClassName?: string;
 }
 
-const inputStyles =
-  'h-11 rounded-full border-0 bg-[#1e2130] pl-11 pr-10 text-sm font-normal text-foreground placeholder:text-[#8e919f] focus-visible:ring-2 focus-visible:ring-[#961200]/40 focus-visible:ring-offset-0';
+const sizeStyles = {
+  large: {
+    container: 'gap-2 rounded-2xl px-4 py-2',
+    searchIcon: 'h-6 w-6',
+    searchIconSize: 24,
+    input: 'text-base leading-[30px]',
+    close: 'h-5 w-5',
+    closeIcon: searchCloseIcon,
+    closeSize: 20,
+  },
+  small: {
+    container: 'h-11 gap-1 rounded-xl px-4 py-2',
+    searchIcon: 'h-5 w-5',
+    searchIconSize: 20,
+    input: 'text-sm leading-[28px]',
+    close: 'h-4 w-4',
+    closeIcon: searchCloseSmIcon,
+    closeSize: 16,
+  },
+} as const;
+
+const containerBase =
+  'flex w-full items-center border border-[#252b37] bg-[rgba(10,13,18,0.6)] backdrop-blur-[20px]';
+
+const inputBase =
+  'h-auto min-h-0 flex-1 border-0 bg-transparent p-0 font-normal text-[#fdfdfd] shadow-none placeholder:text-[#717680] focus-visible:ring-0 focus-visible:ring-offset-0 [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden';
 
 export function SearchBar({
   defaultQuery = '',
   onSubmit,
   onClear,
   autoFocus,
+  size = 'large',
   className,
   inputClassName,
 }: SearchBarProps) {
+  const styles = sizeStyles[size];
   const {
     register,
     handleSubmit,
@@ -57,40 +87,54 @@ export function SearchBar({
     onClear?.();
   };
 
+  const hasQuery = Boolean(query?.trim());
+
   return (
-    <form onSubmit={submit} className={cn('relative w-full', className)}>
-      <img
-        src={searchIcon}
-        alt=""
-        aria-hidden
-        width={20}
-        height={20}
-        className="pointer-events-none absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2"
-      />
-      <Input
-        {...register('query')}
-        type="search"
-        enterKeyHint="search"
-        placeholder="Search Movie"
-        autoFocus={autoFocus}
-        autoComplete="off"
-        className={cn(inputStyles, inputClassName)}
-      />
-      {query?.trim() && (
-        <button
-          type="button"
-          onClick={handleClear}
-          className="absolute right-3 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full text-[#8e919f] transition-colors hover:bg-white/10 hover:text-foreground"
-          aria-label="Clear search"
-        >
-          <X className="h-4 w-4" />
-        </button>
-      )}
+    <div className={cn('w-full', className)}>
+      <form onSubmit={submit} className={cn(containerBase, styles.container)}>
+        <img
+          src={searchIcon}
+          alt=""
+          aria-hidden
+          width={styles.searchIconSize}
+          height={styles.searchIconSize}
+          className={cn('pointer-events-none shrink-0', styles.searchIcon)}
+        />
+        <Input
+          {...register('query')}
+          type="search"
+          enterKeyHint="search"
+          placeholder="Search Movie"
+          autoFocus={autoFocus}
+          autoComplete="off"
+          className={cn(inputBase, styles.input, inputClassName)}
+        />
+        {hasQuery && (
+          <button
+            type="button"
+            onClick={handleClear}
+            className={cn(
+              'flex shrink-0 items-center justify-center transition-opacity hover:opacity-80',
+              styles.close
+            )}
+            aria-label="Clear search"
+          >
+            <img
+              src={styles.closeIcon}
+              alt=""
+              aria-hidden
+              width={styles.closeSize}
+              height={styles.closeSize}
+              className={styles.close}
+            />
+          </button>
+        )}
+      </form>
       {errors.query && (
         <p className="mt-1.5 text-xs text-destructive" role="alert">
           {errors.query.message}
         </p>
       )}
-    </form>
+    </div>
   );
 }

@@ -13,20 +13,22 @@ export function BrandLogo({ className, compact }: BrandLogoProps) {
     <Link
       to="/"
       aria-label="Movie Explorer home"
-      className={cn('inline-flex shrink-0 items-center gap-2', className)}
+      className={cn('inline-flex shrink-0 items-center', compact ? 'gap-1' : 'gap-2', className)}
     >
       <img
         src={movieLogo}
         alt=""
         aria-hidden
-        width={34}
-        height={32}
-        className={cn('shrink-0', compact ? 'h-7 w-[29px]' : 'h-8 w-[34px]')}
+        width={compact ? 28 : 34}
+        height={compact ? 28 : 32}
+        className={cn('shrink-0', compact ? 'h-7 w-7' : 'h-8 w-[34px]')}
       />
       <span
         className={cn(
-          'font-[Poppins] font-semibold tracking-[-0.04em] text-[#FDFDFD]',
-          compact ? 'text-xl leading-7' : 'text-[28.4444px] leading-9'
+          'font-[Poppins] font-semibold text-[#FDFDFD]',
+          compact
+            ? 'text-[19.911px] leading-[24.889px] tracking-[-0.7964px]'
+            : 'text-[28.4444px] leading-9 tracking-[-0.04em]'
         )}
       >
         Movie

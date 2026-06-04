@@ -16,6 +16,20 @@ export const useNowPlayingMovies = (page = 1) => {
   });
 };
 
+export const useMovieDetails = (id: number) =>
+  useQuery({
+    queryKey: QUERY_KEYS.movies.details(id),
+    queryFn: () => movieService.getMovieDetails(id),
+    enabled: id > 0,
+  });
+
+export const useMovieCredits = (id: number) =>
+  useQuery({
+    queryKey: QUERY_KEYS.movies.credits(id),
+    queryFn: () => movieService.getMovieCredits(id),
+    enabled: id > 0,
+  });
+
 export const useMovieVideos = (id: number) =>
   useQuery({
     queryKey: QUERY_KEYS.movies.videos(id),

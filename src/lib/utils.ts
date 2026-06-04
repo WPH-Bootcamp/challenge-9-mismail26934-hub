@@ -31,6 +31,19 @@ export function filterMovies(items: Movie[]): Movie[] {
   return items.filter((item) => item.media_type === 'movie' || (!item.media_type && !!item.title));
 }
 
+export function formatDetailDate(dateString: string): string {
+  if (!dateString) return '';
+  return new Date(dateString).toLocaleDateString('id-ID', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+}
+
+export function getAgeLimitLabel(adult?: boolean): string {
+  return adult ? '17' : '13';
+}
+
 export function formatRating(rating: number): string {
   return `${rating.toFixed(1)}/10`;
 }
