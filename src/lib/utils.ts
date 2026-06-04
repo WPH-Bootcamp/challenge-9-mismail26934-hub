@@ -30,3 +30,7 @@ export function getMovieReleaseDate(movie: Movie): string {
 export function filterMovies(items: Movie[]): Movie[] {
   return items.filter((item) => item.media_type === 'movie' || (!item.media_type && !!item.title));
 }
+
+export function formatRating(rating: number): string {
+  return `${rating.toFixed(1)}/10`;
+}

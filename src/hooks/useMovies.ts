@@ -15,3 +15,10 @@ export const useNowPlayingMovies = (page = 1) => {
     queryFn: () => movieService.getNowPlayingMovies(page),
   });
 };
+
+export const useMovieVideos = (id: number) =>
+  useQuery({
+    queryKey: QUERY_KEYS.movies.videos(id),
+    queryFn: () => movieService.getMovieVideos(id),
+    enabled: id > 0,
+  });
