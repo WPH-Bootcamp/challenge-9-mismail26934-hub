@@ -1,21 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
-// import { movieService } from '@/services/movieService';
+import { QUERY_KEYS } from '@/lib/constants';
+import { movieService } from '@/services/movieService';
 
-// TODO: Create custom hooks using React Query
-// Reference: https://tanstack.com/query/latest/docs/framework/react/overview
-
-// Example: Hook to fetch popular movies
-export const usePopularMovies = () => {
-  // TODO: Implement useQuery hook
-  // Hint: Use movieService.getPopularMovies as queryFn
+export const usePopularMovies = (page = 1) => {
   return useQuery({
-    queryKey: ['movies', 'popular'],
-    queryFn: () => {
-      // TODO: Call your movie service function
-      throw new Error('Not implemented');
-    },
+    queryKey: QUERY_KEYS.movies.popular(page),
+    queryFn: () => movieService.getPopularMovies(page),
   });
 };
 
-// TODO: Add more hooks for different endpoints
-// Examples: useMovieDetails, useSearchMovies, useNowPlayingMovies
+export const useNowPlayingMovies = (page = 1) => {
+  return useQuery({
+    queryKey: QUERY_KEYS.movies.nowPlaying(page),
+    queryFn: () => movieService.getNowPlayingMovies(page),
+  });
+};

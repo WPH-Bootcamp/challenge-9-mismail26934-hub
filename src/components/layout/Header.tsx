@@ -49,7 +49,8 @@ function NavLink({
   );
 }
 
-const NAVBAR_BLUR = 'bg-[rgba(10,13,18,0.6)] backdrop-blur-[40px]';
+const NAVBAR_BLUR = 'navbar-blur';
+const NAVBAR_BLACK = 'bg-[var(--color-background)]';
 
 export function Header() {
   const location = useLocation();
@@ -60,7 +61,7 @@ export function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  const showNavbarBlur = scrolled || mobileMenuOpen || searchOpen;
+  const showNavbarBlur = scrolled;
 
   useEffect(() => {
     const onScroll = () => {
@@ -101,30 +102,36 @@ export function Header() {
   return (
     <header
       className={cn(
-        'fixed inset-x-0 top-0 z-50 w-full transition-[background-color,backdrop-filter] duration-300',
-        showNavbarBlur ? NAVBAR_BLUR : 'bg-transparent'
+        'fixed inset-x-0 top-0 z-50 w-full transition-colors duration-300',
+        showNavbarBlur
+          ? NAVBAR_BLUR
+          : mobileMenuOpen || searchOpen
+            ? NAVBAR_BLACK
+            : 'bg-transparent'
       )}
     >
       {/* Mobile */}
-      <div className="mx-auto flex h-14 w-full min-w-0 max-w-[393px] items-center justify-between gap-4 px-4 md:hidden">
+      <div className="mx-auto flex h-14 w-full min-w-0 max-w-[393px] items-center justify-between gap-4 md:hidden">
         <Logo />
 
         <div className="flex items-center gap-1">
-          <button
-            type="button"
-            onClick={() => {
-              setSearchOpen((open) => !open);
-              setMobileMenuOpen(false);
-            }}
-            className={cn(
-              'flex h-10 w-10 items-center justify-center rounded-full transition-colors',
-              searchOpen ? 'bg-white/10' : 'hover:bg-white/5'
-            )}
-            aria-label="Search"
-            aria-expanded={searchOpen}
-          >
-            <img src={searchIcon} alt="" aria-hidden width={20} height={20} className="h-5 w-5" />
-          </button>
+          {!mobileMenuOpen && (
+            <button
+              type="button"
+              onClick={() => {
+                setSearchOpen((open) => !open);
+                setMobileMenuOpen(false);
+              }}
+              className={cn(
+                'flex h-10 w-10 items-center justify-center rounded-full transition-colors',
+                searchOpen ? 'bg-white/10' : 'hover:bg-white/5'
+              )}
+              aria-label="Search"
+              aria-expanded={searchOpen}
+            >
+              <img src={searchIcon} alt="" aria-hidden width={20} height={20} className="h-5 w-5" />
+            </button>
+          )}
           <button
             type="button"
             onClick={() => {
@@ -143,13 +150,11 @@ export function Header() {
       {/* Desktop */}
       <div className="mx-auto hidden h-[72px] max-w-7xl items-center gap-10 px-8 md:flex lg:px-12">
         <Logo />
-
         <nav className="flex items-center gap-8">
           {navLinks.map((link) => (
             <NavLink key={link.label} label={link.label} to={link.to} />
           ))}
         </nav>
-
         <SearchBar
           defaultQuery={searchQuery}
           onSubmit={handleSearch}
@@ -168,7 +173,7 @@ export function Header() {
             transition={{ duration: 0.2 }}
             className={cn(
               'mx-auto w-full min-w-0 max-w-[393px] overflow-hidden border-t border-white/5 px-4 pb-4 pt-3 md:hidden',
-              NAVBAR_BLUR
+              NAVBAR_BLACK
             )}
           >
             <SearchBar
@@ -190,7 +195,7 @@ export function Header() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm md:hidden"
+              className="fixed inset-0 z-40 md:hidden"
               aria-label="Close menu"
               onClick={closeMobile}
             />
@@ -199,7 +204,7 @@ export function Header() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.2 }}
-              className={cn('relative z-50 border-t border-white/5 md:hidden', NAVBAR_BLUR)}
+              className={cn('relative z-50 border-t border-white/5 md:hidden', NAVBAR_BLACK)}
             >
               <div className="mx-auto flex w-full max-w-[393px] flex-col gap-1 px-4 py-4">
                 {navLinks.map((link) => (
