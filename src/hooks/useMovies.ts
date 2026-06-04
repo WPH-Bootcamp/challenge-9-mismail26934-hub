@@ -2,6 +2,16 @@ import { useQuery } from '@tanstack/react-query';
 import { QUERY_KEYS } from '@/lib/constants';
 import { movieService } from '@/services/movieService';
 
+export const useTrendingMovies = (
+  timeWindow: 'day' | 'week' = 'week',
+  page = 1
+) =>
+  useQuery({
+    queryKey: QUERY_KEYS.movies.trending(timeWindow, page),
+    queryFn: () => movieService.getTrending(timeWindow, page),
+    staleTime: 1000 * 60 * 5,
+  });
+
 export const usePopularMovies = (page = 1) => {
   return useQuery({
     queryKey: QUERY_KEYS.movies.popular(page),
