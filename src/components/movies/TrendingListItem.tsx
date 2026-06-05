@@ -40,7 +40,7 @@ export function TrendingListItem({
 
   return (
     <section id={id} className="overflow-x-hidden py-8 md:py-12">
-      <div className="container-page mx-auto w-full min-w-0 max-md:max-w-[393px]">
+      <div className="container-page mx-auto w-full min-w-0 max-md:max-w-page">
         {isLoading && (
           <>
             {title && (
@@ -52,7 +52,7 @@ export function TrendingListItem({
               {Array.from({ length: 4 }).map((_, i) => (
                 <Skeleton
                   key={i}
-                  className="aspect-[2/3] w-full rounded-xl md:h-[240px] md:w-[180px] md:shrink-0 md:aspect-auto lg:w-[200px]"
+                  className="aspect-poster w-full rounded-xl md:h-60 md:w-45 md:shrink-0 md:aspect-auto lg:w-50"
                 />
               ))}
             </div>
@@ -106,7 +106,7 @@ export function TrendingListItem({
                 {movies.map((movie, index) => (
                   <CarouselItem
                     key={movie.id}
-                    className="basis-1/2 pl-4 md:basis-[180px] lg:basis-[200px]"
+                    className="basis-1/2 pl-4 md:basis-45 lg:basis-50"
                   >
                     <MovieCard movie={movie} index={index} rank={index + 1} variant="carousel" />
                   </CarouselItem>
@@ -116,7 +116,7 @@ export function TrendingListItem({
               {isOverlayNav && (
                 <div
                   aria-hidden
-                  className="pointer-events-none absolute inset-y-0 right-0 z-[5] w-16 bg-gradient-to-l from-background via-background/80 to-transparent sm:w-20 md:w-24"
+                  className="pointer-events-none absolute inset-y-0 right-0 z-5 w-16 bg-gradient-to-l from-background via-background/80 to-transparent sm:w-20 md:w-24"
                 />
               )}
 
@@ -125,7 +125,7 @@ export function TrendingListItem({
                   variant="ghost"
                   className={cn(
                     overlayNavClass,
-                    'right-0 top-[6.75rem] -translate-y-1/2 md:top-[7.25rem] md:right-4'
+                    'right-0 top-27 -translate-y-1/2 md:top-29 md:right-4'
                   )}
                 />
               ) : (
@@ -134,14 +134,14 @@ export function TrendingListItem({
                     variant="ghost"
                     className={cn(
                       overlayNavClass,
-                      'left-0 top-[6.75rem] -translate-y-1/2 md:top-[7.25rem] hidden md:flex'
+                      'left-0 top-27 -translate-y-1/2 md:top-29 hidden md:flex'
                     )}
                   />
                   <CarouselNext
                     variant="ghost"
                     className={cn(
                       overlayNavClass,
-                      'right-0 top-[6.75rem] -translate-y-1/2 md:top-[7.25rem] md:right-4'
+                      'right-0 top-27 -translate-y-1/2 md:top-29 md:right-4'
                     )}
                   />
                 </>
@@ -171,7 +171,7 @@ export function NewReleaseSection({ movies, isLoading, isError }: NewReleaseSect
 
   return (
     <section id="new-release" className="overflow-x-hidden py-8 md:py-12">
-      <div className="container-page mx-auto w-full min-w-0 max-md:max-w-[393px]">
+      <div className="container-page mx-auto w-full min-w-0 max-md:max-w-page">
         <motion.h2
           initial={{ opacity: 0, x: -12 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -184,7 +184,7 @@ export function NewReleaseSection({ movies, isLoading, isError }: NewReleaseSect
         {isLoading && (
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 lg:gap-5">
             {Array.from({ length: PAGE_SIZE }).map((_, i) => (
-              <Skeleton key={i} className="aspect-[2/3] w-full rounded-xl" />
+              <Skeleton key={i} className="aspect-poster w-full rounded-xl" />
             ))}
           </div>
         )}

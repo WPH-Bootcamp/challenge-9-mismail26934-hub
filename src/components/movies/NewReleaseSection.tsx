@@ -26,7 +26,7 @@ export function NewReleaseSection({ movies, isLoading, isError }: NewReleaseSect
       id="new-release"
       className="relative overflow-hidden bg-black py-8 max-md:pb-0 md:py-12 md:pb-0"
     >
-      <div className="container-page relative mx-auto w-full min-w-0 max-md:max-w-[393px]">
+      <div className="container-page relative mx-auto w-full min-w-0 max-md:max-w-page">
         <motion.h2
           initial={{ opacity: 0, x: -12 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -39,7 +39,7 @@ export function NewReleaseSection({ movies, isLoading, isError }: NewReleaseSect
         {isLoading && (
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 lg:gap-5">
             {Array.from({ length: PAGE_SIZE }).map((_, i) => (
-              <Skeleton key={i} className="aspect-[2/3] w-full rounded-2xl" />
+              <Skeleton key={i} className="aspect-poster w-full rounded-2xl" />
             ))}
           </div>
         )}
@@ -69,7 +69,6 @@ export function NewReleaseSection({ movies, isLoading, isError }: NewReleaseSect
             type="button"
             variant="loadMore"
             size="loadMore"
-            className="btn-load-more"
             onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
           >
             Load More

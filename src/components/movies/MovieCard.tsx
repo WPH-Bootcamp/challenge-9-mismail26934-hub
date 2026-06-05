@@ -42,7 +42,7 @@ export function MovieCard({
           <img
             src={getImageUrl(movie.poster_path, IMAGE_SIZES.poster.medium)}
             alt={title}
-            className="aspect-[2/3] w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            className="aspect-poster w-full object-cover transition-transform duration-300 group-hover:scale-105"
             loading="lazy"
           />
           {rank !== undefined && (
@@ -65,7 +65,7 @@ export function MovieCard({
         </p>
         {fadeBottom && (
           <div
-            className="new-release-card-fade pointer-events-none absolute inset-x-0 bottom-0 top-[38%]"
+            className="new-release-card-fade pointer-events-none absolute inset-x-0 bottom-0 top-card-fade"
             aria-hidden
           />
         )}

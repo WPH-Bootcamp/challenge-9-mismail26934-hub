@@ -3,29 +3,134 @@
 @theme {
   --font-sans: 'Poppins', system-ui, -apple-system, sans-serif;
 
-  --color-background: #000000;
-  --color-foreground: #ffffff;
-  --color-card: #16141f;
-  --color-card-foreground: #ffffff;
-  --color-muted: #2a2738;
-  --color-muted-foreground: #9b96ab;
-  --color-border: #2a2738;
-  --color-primary: #961200;
-  --color-primary-foreground: #ffffff;
+  /* Primitive — Figma neutral scale */
+  --color-neutral-25: #fdfdfd;
+  --color-neutral-300: #d5d7da;
+  --color-neutral-400: #a4a7ae;
+  --color-neutral-500: #717680;
+  --color-neutral-800: #252b37;
+  --color-neutral-900: #181d27;
+  --color-neutral-950: #0a0d12;
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* Brand */
+  --color-brand: #961200;
+  --color-brand-hover: #7f0f00;
+
+  /* Surface effects */
+  --color-glass: rgb(10 13 18 / 0.6);
+  --color-glass-hover: rgb(10 13 18 / 0.8);
+  --color-glass-navbar: rgb(10 13 18 / 0.6);
+  --color-toast-glass: rgb(0 0 0 / 0.25);
+
+  /* Semantic */
+  --color-background: var(--color-black);
+  --color-foreground: var(--color-neutral-25);
+  --color-card: var(--color-neutral-950);
+  --color-card-foreground: var(--color-neutral-25);
+  --color-muted: var(--color-neutral-900);
+  --color-muted-foreground: var(--color-neutral-400);
+  --color-border: var(--color-neutral-800);
+  --color-divider: var(--color-neutral-900);
+  --color-input: var(--color-neutral-800);
+  --color-primary: var(--color-brand);
+  --color-primary-foreground: var(--color-white);
+  --color-primary-hover: var(--color-brand-hover);
   --color-secondary: transparent;
-  --color-secondary-foreground: #ffffff;
+  --color-secondary-foreground: var(--color-white);
   --color-accent: #f5c518;
   --color-accent-foreground: #0d0c11;
   --color-destructive: #ef4444;
-  --color-ring: #961200;
+  --color-destructive-foreground: var(--color-white);
+  --color-ring: var(--color-brand);
 
   --radius-sm: 0.375rem;
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
   --radius-xl: 1rem;
+
+  /* Figma layout — nilai di luar skala default Tailwind */
+  --spacing-89: 5.5625rem;
+  --spacing-114: 7.125rem;
+  --spacing-134: 8.375rem;
+  --spacing-146: 9.125rem;
+  --spacing-158: 9.875rem;
+  --spacing-159: 9.9375rem;
+  --spacing-230: 14.375rem;
+  --spacing-236: 14.75rem;
+  --spacing-276: 17.25rem;
+  --spacing-322: 20.125rem;
+  --spacing-361: 22.5625rem;
+  --spacing-531: 33.1875rem;
+
+  --max-width-page: 24.5625rem;
+
+  --z-index-5: 5;
+  --z-index-60: 60;
 }
 
-/* Figma page frame 22419:2721 — 16px mobile, 64px desktop horizontal padding */
+@utility aspect-poster {
+  aspect-ratio: 2 / 3;
+}
+
+@utility top-card-fade {
+  top: 38%;
+}
+
+@utility detail-content-mobile {
+  padding-top: calc(var(--spacing-16) + var(--spacing-158));
+}
+
+@utility max-w-toast-responsive {
+  max-width: calc(100vw - var(--spacing-8));
+}
+
+/* ── Reusable color utilities ── */
+@utility text-body-muted {
+  color: var(--color-muted-foreground);
+}
+
+@utility surface-glass {
+  background-color: var(--color-glass);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+}
+
+@utility surface-glass-navbar {
+  background-color: var(--color-glass-navbar);
+  -webkit-backdrop-filter: blur(40px);
+  backdrop-filter: blur(40px);
+}
+
+@utility surface-outline {
+  border: 1px solid var(--color-border);
+  background-color: var(--color-background);
+}
+
+@utility border-divider {
+  border-color: var(--color-divider);
+}
+
+@utility gradient-hero-vertical {
+  background: linear-gradient(
+    180deg,
+    rgb(0 0 0 / 0) 0%,
+    rgb(0 0 0 / 0.6) 50%,
+    var(--color-background) 100%
+  );
+}
+
+@utility gradient-hero-side {
+  background: linear-gradient(
+    90deg,
+    var(--color-background) 0%,
+    rgb(0 0 0 / 0.4) 40%,
+    rgb(0 0 0 / 0) 100%
+  );
+}
+
+/* Figma page frame desktop horizontal padding */
 @utility container-page {
   width: 100%;
   max-width: 1440px;
@@ -72,24 +177,10 @@
     display: none;
   }
 
-  .navbar-blur {
-    background-color: rgba(10, 13, 18, 0.6);
-    -webkit-backdrop-filter: blur(40px);
-    backdrop-filter: blur(40px);
-  }
-
-  .hero-gradient {
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 50%, #000000 100%);
-  }
-
-  .hero-gradient-side {
-    background: linear-gradient(90deg, #000000 0%, rgba(0, 0, 0, 0.4) 40%, rgba(0, 0, 0, 0) 100%);
-  }
-
-  /* Hero inner — mobile: 159px below navbar (h-16 = 64px) */
+  /* Hero inner — mobile */
   @media (width < 48rem) {
     .hero-inner {
-      padding-top: calc(4rem + 159px);
+      padding-top: calc(var(--spacing-16) + var(--spacing-159));
       justify-content: flex-start;
     }
 
@@ -97,9 +188,9 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 6px;
+      gap: 0.375rem; /* gap-1.5 */
       width: 100%;
-      max-width: 361px;
+      max-width: var(--spacing-361);
       min-height: 182px;
     }
   }
@@ -112,97 +203,59 @@
     .hero-text {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 0.75rem; /* gap-3 */
     }
   }
 
-  .hero-text__description {
-    font-family: 'Poppins', system-ui, sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 30px;
-    color: #a4a7ae;
-  }
-
-  /* Load More — Figma 22412:1929 */
-  .btn-load-more {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    height: 52px;
-    width: 100%;
-    max-width: 361px;
-    padding: 8px 16px;
-    border-radius: 9999px;
-    border: 1px solid #181d27;
-    background: rgba(10, 13, 18, 0.6);
-    -webkit-backdrop-filter: blur(20px);
-    backdrop-filter: blur(20px);
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 24px;
-    color: #ffffff;
-  }
-
-  @media (width >= 48rem) {
-    .btn-load-more {
-      width: 230px;
-      max-width: none;
-    }
-  }
-
-  /* New Release — Load More (mobile: 89px / desktop: 134px from section bottom) */
+  /* New Release — Load More */
   .new-release-load-more {
     position: absolute;
-    bottom: 89px;
+    bottom: var(--spacing-89);
     left: 50%;
     z-index: 20;
     display: flex;
     justify-content: center;
     width: 100%;
-    padding-inline: 1rem;
+    padding-inline: var(--spacing-4);
     transform: translateX(-50%);
   }
 
   @media (width >= 48rem) {
     .new-release-load-more {
-      bottom: 134px;
+      bottom: var(--spacing-134);
       padding-inline: 0;
     }
   }
 
-  /* New Release — bottom fade to solid black (Figma 22421:4563 mobile) */
+  /* New Release — bottom fade to solid black (Figma mobile) */
   .new-release-bottom-fade {
     position: absolute;
     inset-inline: 0;
     bottom: 0;
     z-index: 5;
     width: 100%;
-    height: 220px;
+    height: var(--spacing-55);
     border-radius: 0;
     background: linear-gradient(
       180deg,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 0.35) 38%,
-      #000000 72%,
-      #000000 100%
+      rgb(0 0 0 / 0) 0%,
+      rgb(0 0 0 / 0.35) 38%,
+      var(--color-background) 72%,
+      var(--color-background) 100%
     );
   }
 
-  /* New Release — desktop fade (Figma 22412:2053) */
+  /* New Release — desktop fade */
   @media (width >= 48rem) {
     .new-release-bottom-fade {
-      height: 496px;
+      height: var(--spacing-124);
       background: linear-gradient(
         180deg,
-        rgba(0, 0, 0, 0) 0%,
-        rgba(0, 0, 0, 0.25) 25%,
-        rgba(0, 0, 0, 0.7) 55%,
-        #000000 79.44%,
-        #000000 100%
+        rgb(0 0 0 / 0) 0%,
+        rgb(0 0 0 / 0.25) 25%,
+        rgb(0 0 0 / 0.7) 55%,
+        var(--color-background) 79.44%,
+        var(--color-background) 100%
       );
     }
   }

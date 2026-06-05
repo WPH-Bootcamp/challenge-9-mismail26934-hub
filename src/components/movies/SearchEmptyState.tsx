@@ -16,12 +16,12 @@ export function SearchEmptyState() {
         aria-hidden
         width={200}
         height={200}
-        className="mb-6 h-[160px] w-[160px] md:mb-8 md:h-[200px] md:w-[200px]"
+        className="mb-6 h-40 w-40 md:mb-8 md:h-50 md:w-50"
       />
 
-      <h2 className="text-xl font-bold text-[#fdfdfd] md:text-2xl">Data Not Found</h2>
+      <h2 className="text-xl font-bold text-foreground md:text-2xl">Data Not Found</h2>
 
-      <p className="mt-2 text-sm leading-relaxed text-[#9CA3AF] md:text-base">
+      <p className="mt-2 text-sm leading-relaxed text-body-muted md:text-base">
         Try other keywords
       </p>
     </motion.div>

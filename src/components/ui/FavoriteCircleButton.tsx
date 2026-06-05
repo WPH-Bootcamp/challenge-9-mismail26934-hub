@@ -19,7 +19,7 @@ export function FavoriteCircleButton({
       type="button"
       onClick={onClick}
       className={cn(
-        'flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#252B37] bg-black transition-colors hover:bg-white/5 md:h-[52px] md:w-[52px]',
+        'surface-outline flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition-colors hover:bg-white/5 md:size-13',
         className
       )}
       aria-label={ariaLabel}
@@ -27,7 +27,7 @@ export function FavoriteCircleButton({
       <Heart
         className={cn(
           'h-5 w-5 md:h-6 md:w-6',
-          favorited ? 'fill-[#961200] text-[#961200]' : 'text-[#fdfdfd]'
+          favorited ? 'fill-primary text-primary' : 'text-foreground'
         )}
       />
     </button>

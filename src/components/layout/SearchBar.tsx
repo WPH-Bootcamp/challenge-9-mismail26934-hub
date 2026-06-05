@@ -31,7 +31,7 @@ const sizeStyles = {
     container: 'gap-2 rounded-2xl px-4 py-2',
     searchIcon: 'h-6 w-6',
     searchIconSize: 24,
-    input: 'text-base leading-[30px]',
+    input: 'text-base leading-7.5',
     close: 'h-5 w-5',
     closeIcon: searchCloseIcon,
     closeSize: 20,
@@ -40,18 +40,17 @@ const sizeStyles = {
     container: 'h-11 gap-1 rounded-xl px-4 py-2',
     searchIcon: 'h-5 w-5',
     searchIconSize: 20,
-    input: 'text-sm leading-[28px]',
+    input: 'text-sm leading-7',
     close: 'h-4 w-4',
     closeIcon: searchCloseSmIcon,
     closeSize: 16,
   },
 } as const;
 
-const containerBase =
-  'flex w-full items-center border border-[#252b37] bg-[rgba(10,13,18,0.6)] backdrop-blur-[20px]';
+const containerBase = 'surface-glass flex w-full items-center border border-border';
 
 const inputBase =
-  'h-auto min-h-0 flex-1 border-0 bg-transparent p-0 font-normal text-[#fdfdfd] shadow-none placeholder:text-[#717680] focus-visible:ring-0 focus-visible:ring-offset-0 [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden';
+  'h-auto min-h-0 flex-1 border-0 bg-transparent p-0 font-normal text-foreground shadow-none placeholder:text-neutral-500 focus-visible:ring-0 focus-visible:ring-offset-0 [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden';
 
 export function SearchBar({
   defaultQuery = '',

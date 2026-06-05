@@ -23,7 +23,7 @@ export function FavoriteToast() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -12 }}
           transition={{ duration: 0.28, ease: 'easeOut' }}
-          className="pointer-events-none fixed left-1/2 top-[114px] z-[60] box-border flex h-[52px] w-[531px] max-w-[calc(100vw-2rem)] -translate-x-1/2 flex-row items-center justify-center gap-3 rounded-2xl bg-[rgba(0,0,0,0.25)] px-6 py-0 backdrop-blur-[20px]"
+          className="pointer-events-none fixed left-1/2 top-114 z-60 box-border flex h-13 w-531 max-w-toast-responsive -translate-x-1/2 flex-row items-center justify-center gap-3 rounded-2xl bg-toast-glass px-6 py-0 backdrop-blur-xl"
           role="status"
           aria-live="polite"
         >

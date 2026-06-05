@@ -17,12 +17,12 @@ export function FavoritesEmptyState() {
         aria-hidden
         width={160}
         height={160}
-        className="mb-6 h-[120px] w-[120px] md:mb-8 md:h-[160px] md:w-[160px]"
+        className="mb-6 h-30 w-30 md:mb-8 md:h-40 md:w-40"
       />
 
-      <h2 className="text-xl font-bold text-[#fdfdfd] md:text-2xl">Data Empty</h2>
+      <h2 className="text-xl font-bold text-foreground md:text-2xl">Data Empty</h2>
 
-      <p className="mt-2 max-w-sm text-sm leading-relaxed text-[#9CA3AF] md:text-base">
+      <p className="mt-2 max-w-sm text-sm leading-relaxed text-body-muted md:text-base">
         You don&apos;t have a favorite movie yet
       </p>
 
@@ -30,7 +30,7 @@ export function FavoritesEmptyState() {
         asChild
         variant="primary"
         size="hero"
-        className="mt-6 w-full md:mt-8 md:w-auto md:min-w-[280px] md:px-12"
+        className="mt-6 w-full md:mt-8 md:w-auto md:min-w-70 md:px-12"
       >
         <Link to="/">Explore Movie</Link>
       </Button>

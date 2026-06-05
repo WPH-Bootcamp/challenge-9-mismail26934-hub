@@ -21,7 +21,7 @@ export function FavoriteListItem({ movie }: FavoriteListItemProps) {
   const trailer = videos.data?.results?.find((v) => v.site === 'YouTube' && v.type === 'Trailer');
 
   return (
-    <article className="border-b border-[#181D27] py-6 last:border-b-0 md:py-8">
+    <article className="border-b border-divider py-6 last:border-b-0 md:py-8">
       <div className="flex items-start gap-4 md:gap-8">
         <Link
           to={`/movie/${movie.id}`}
@@ -30,23 +30,23 @@ export function FavoriteListItem({ movie }: FavoriteListItemProps) {
           <img
             src={getImageUrl(movie.poster_path, IMAGE_SIZES.poster.medium)}
             alt={title}
-            className="aspect-[2/3] w-[120px] object-contain md:w-[200px]"
+            className="aspect-poster w-30 object-contain md:w-50"
           />
         </Link>
 
         <div className="flex min-w-0 flex-1 flex-col">
           <Link to={`/movie/${movie.id}`} className="w-fit">
-            <h3 className="text-base font-bold leading-tight text-[#fdfdfd] md:text-2xl md:leading-tight">
+            <h3 className="text-base font-bold leading-tight text-foreground md:text-2xl md:leading-tight">
               {title}
             </h3>
           </Link>
 
-          <p className="mt-2 flex items-center gap-2 text-sm text-[#fdfdfd] md:mt-3 md:text-base">
+          <p className="mt-2 flex items-center gap-2 text-sm text-foreground md:mt-3 md:text-base">
             <img src={starIcon} alt="" aria-hidden width={20} height={20} className="h-5 w-5 shrink-0" />
             {formatRating(movie.vote_average)}
           </p>
 
-          <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-[#9CA3AF] md:mt-3 md:text-base md:leading-7">
+          <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-body-muted md:mt-3 md:text-base md:leading-7">
             {movie.overview}
           </p>
 
@@ -55,7 +55,7 @@ export function FavoriteListItem({ movie }: FavoriteListItemProps) {
               asChild
               variant="primary"
               size="hero"
-              className="mt-4 hidden md:mt-6 md:inline-flex md:w-[230px]"
+              className="mt-4 hidden md:mt-6 md:inline-flex md:w-230"
             >
               <a
                 href={`https://www.youtube.com/watch?v=${trailer.key}`}

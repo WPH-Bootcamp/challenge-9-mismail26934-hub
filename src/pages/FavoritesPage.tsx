@@ -8,11 +8,11 @@ export function FavoritesPage() {
 
   return (
     <main className="flex min-h-0 w-full flex-1 flex-col bg-black pt-20 md:pt-24">
-      <div className="container-page flex flex-1 flex-col max-md:max-w-[393px]">
+      <div className="container-page flex flex-1 flex-col max-md:max-w-page">
         <motion.h1
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-2xl font-bold text-[#fdfdfd] md:text-3xl"
+          className="text-2xl font-bold text-foreground md:text-3xl"
         >
           Favorites
         </motion.h1>

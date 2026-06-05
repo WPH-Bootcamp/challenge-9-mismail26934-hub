@@ -15,7 +15,7 @@ export function PlayIcon({ className }: PlayIconProps) {
     >
       <svg
         viewBox="0 0 24 24"
-        className="ml-0.5 h-3.5 w-3.5 fill-[#961200] md:h-4 md:w-4"
+        className="ml-0.5 h-3.5 w-3.5 fill-primary md:h-4 md:w-4"
       >
         <path d="M8 5.14v13.72L19 12 8 5.14z" />
       </svg>

@@ -62,26 +62,26 @@ export function MovieDetailPage() {
 
   return (
     <main className="w-full min-w-0 overflow-x-hidden pb-8">
-      <section className="relative w-full min-w-0 overflow-hidden bg-black md:min-h-[480px]">
-        <div className="absolute inset-0 w-full md:min-h-[480px]">
+      <section className="relative w-full min-w-0 overflow-hidden bg-background md:min-h-120">
+        <div className="absolute inset-0 w-full md:min-h-120">
           <img
             src={getImageUrl(movie.backdrop_path, IMAGE_SIZES.backdrop.large)}
             alt=""
             className="absolute inset-0 h-full w-full object-cover"
           />
-          <div className="hero-gradient absolute inset-0" />
-          <div className="hero-gradient-side absolute inset-0 hidden md:block" />
+          <div className="gradient-hero-vertical absolute inset-0" />
+          <div className="gradient-hero-side absolute inset-0 hidden md:block" />
         </div>
 
-        <div className="container-page relative z-10 mx-auto max-md:max-w-[393px]">
-          <div className="pb-2 pt-[calc(4rem+158px)] md:relative md:pb-10 md:pt-[322px]">
+        <div className="container-page relative z-10 mx-auto max-md:max-w-page">
+          <div className="detail-content-mobile pb-2 md:relative md:pb-10 md:pt-322">
             <div className="flex flex-row items-start gap-4 md:gap-8">
               <motion.img
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 src={getImageUrl(movie.poster_path, IMAGE_SIZES.poster.large)}
                 alt={title}
-                className="aspect-[2/3] w-[120px] shrink-0 rounded-xl object-cover shadow-2xl md:w-[200px] md:object-cover lg:w-[240px]"
+                className="aspect-poster w-30 shrink-0 rounded-xl object-cover shadow-2xl md:w-50 md:object-cover lg:w-60"
               />
 
               <motion.div
@@ -89,11 +89,11 @@ export function MovieDetailPage() {
                 animate={{ opacity: 1, y: 0 }}
                 className="min-w-0 flex-1 md:pt-0"
               >
-                <h1 className="break-words text-base font-bold leading-tight text-[#fdfdfd] md:text-3xl md:leading-snug lg:text-4xl">
+                <h1 className="break-words text-base font-bold leading-tight text-foreground md:text-3xl md:leading-snug lg:text-4xl">
                   {title}
                 </h1>
 
-                <p className="mt-2 flex items-center gap-2 text-sm text-[#fdfdfd] md:mt-3 md:hidden">
+                <p className="mt-2 flex items-center gap-2 text-sm text-foreground md:mt-3 md:hidden">
                   <img
                     src={starIcon}
                     alt=""
@@ -106,7 +106,7 @@ export function MovieDetailPage() {
                 </p>
 
                 {movie.overview ? (
-                  <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-[#9CA3AF] md:hidden">
+                  <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-body-muted md:hidden">
                     {movie.overview}
                   </p>
                 ) : null}
@@ -155,7 +155,7 @@ export function MovieDetailPage() {
         </div>
       </section>
 
-      <section className="container-page min-w-0 pb-10 max-md:max-w-[393px]">
+      <section className="container-page min-w-0 pb-10 max-md:max-w-page">
         <h2 className="text-xl font-bold text-foreground md:text-2xl">Overview</h2>
         <p className="mt-4 text-sm leading-relaxed text-muted-foreground md:text-base">
           {movie.overview || 'No overview available.'}
@@ -179,7 +179,7 @@ export function MovieDetailPage() {
                   <img
                     src={getImageUrl(member.profile_path, IMAGE_SIZES.profile.medium)}
                     alt={member.name}
-                    className="h-[72px] w-[48px] shrink-0 rounded-lg bg-muted object-cover"
+                    className="h-18 w-12 shrink-0 rounded-lg bg-muted object-cover"
                     loading="lazy"
                   />
                   <div className="min-w-0">
@@ -214,7 +214,7 @@ function DetailActions({
           asChild
           variant="primary"
           size="hero"
-          className="min-w-0 flex-1 md:w-[230px] md:flex-none"
+          className="min-w-0 flex-1 md:w-230 md:flex-none"
         >
           <a
             href={`https://www.youtube.com/watch?v=${trailerKey}`}
@@ -251,13 +251,13 @@ function DetailStats({
 
 function DetailSkeleton() {
   return (
-    <main className="w-full min-w-0 overflow-x-hidden bg-black pb-8">
-      <section className="relative w-full overflow-hidden md:min-h-[480px]">
-        <Skeleton className="absolute inset-0 h-full min-h-[360px] rounded-none md:min-h-[480px]" />
-        <div className="hero-gradient absolute inset-0" />
-        <div className="container-page relative z-10 mx-auto max-md:max-w-[393px] md:pt-[322px]">
-          <div className="flex flex-row gap-4 pb-2 pt-[calc(4rem+158px)] md:mt-0 md:pb-10 md:pt-0">
-            <Skeleton className="aspect-[2/3] w-[120px] shrink-0 rounded-xl" />
+    <main className="w-full min-w-0 overflow-x-hidden bg-background pb-8">
+      <section className="relative w-full overflow-hidden md:min-h-120">
+        <Skeleton className="absolute inset-0 h-full min-h-90 rounded-none md:min-h-120" />
+        <div className="gradient-hero-vertical absolute inset-0" />
+        <div className="container-page relative z-10 mx-auto max-md:max-w-page md:pt-322">
+          <div className="detail-content-mobile flex flex-row gap-4 pb-2 md:mt-0 md:pb-10 md:pt-0">
+            <Skeleton className="aspect-poster w-30 shrink-0 rounded-xl" />
             <div className="min-w-0 flex-1 space-y-3">
               <Skeleton className="h-6 w-full" />
               <Skeleton className="h-4 w-20 md:hidden" />
@@ -270,25 +270,25 @@ function DetailSkeleton() {
             <Skeleton className="h-11 w-11 shrink-0 rounded-full" />
           </div>
           <div className="mt-4 grid grid-cols-3 gap-2 md:hidden">
-            <Skeleton className="h-[88px] w-full rounded-xl" />
-            <Skeleton className="h-[88px] w-full rounded-xl" />
-            <Skeleton className="h-[88px] w-full rounded-xl" />
+            <Skeleton className="h-22 w-full rounded-xl" />
+            <Skeleton className="h-22 w-full rounded-xl" />
+            <Skeleton className="h-22 w-full rounded-xl" />
           </div>
           <div className="mt-4 hidden md:grid md:grid-cols-3 md:justify-items-center md:gap-5">
-            <Skeleton className="h-[146px] w-full max-w-[276px] rounded-2xl" />
-            <Skeleton className="h-[146px] w-full max-w-[276px] rounded-2xl" />
-            <Skeleton className="h-[146px] w-full max-w-[276px] rounded-2xl" />
+            <Skeleton className="h-146 w-full max-w-276 rounded-2xl" />
+            <Skeleton className="h-146 w-full max-w-276 rounded-2xl" />
+            <Skeleton className="h-146 w-full max-w-276 rounded-2xl" />
           </div>
         </div>
       </section>
-      <div className="container-page mx-auto max-md:max-w-[393px]">
+      <div className="container-page mx-auto max-md:max-w-page">
         <Skeleton className="mt-8 h-6 w-32" />
         <Skeleton className="mt-4 h-24 w-full" />
         <Skeleton className="mt-10 h-6 w-36" />
         <div className="mt-6 space-y-5">
           {Array.from({ length: 3 }).map((_, i) => (
             <div key={i} className="flex items-center gap-3">
-              <Skeleton className="h-[72px] w-[48px] shrink-0 rounded-lg" />
+              <Skeleton className="h-18 w-12 shrink-0 rounded-lg" />
               <div className="flex-1 space-y-2">
                 <Skeleton className="h-4 w-32" />
                 <Skeleton className="h-3 w-40" />

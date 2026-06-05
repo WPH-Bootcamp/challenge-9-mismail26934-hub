@@ -65,15 +65,15 @@ function MobileMenuNavLink({
     <Link
       to={to}
       onClick={onClick}
-      className="py-2 text-base font-normal leading-[30px] text-white transition-opacity hover:opacity-80"
+      className="py-2 text-base font-normal leading-7.5 text-foreground transition-opacity hover:opacity-80"
     >
       {label}
     </Link>
   );
 }
 
-const NAVBAR_BLUR = 'navbar-blur';
-const NAVBAR_BLACK = 'bg-[var(--color-background)]';
+const NAVBAR_BLUR = 'surface-glass-navbar';
+const NAVBAR_BLACK = 'bg-background';
 
 export function Header() {
   const location = useLocation();
@@ -150,7 +150,7 @@ export function Header() {
       {!mobileMenuOpen && (
         <div
           className={cn(
-            'mx-auto flex h-16 w-full min-w-0 max-w-[393px] items-center px-4 md:hidden',
+            'mx-auto flex h-16 w-full min-w-0 max-w-page items-center px-4 md:hidden',
             showMobileSearch ? 'gap-4' : 'justify-between'
           )}
         >
@@ -226,7 +226,7 @@ export function Header() {
       )}
 
       {/* Desktop — aligned with page container (Figma 22419:2721) */}
-      <div className="container-page hidden h-[72px] items-center justify-between gap-8 md:flex">
+      <div className="container-page hidden h-18 items-center justify-between gap-8 md:flex">
         <div className="flex min-w-0 items-center gap-10">
           <BrandLogo />
           <nav className="flex items-center gap-8">
@@ -239,7 +239,7 @@ export function Header() {
           defaultQuery={searchQuery}
           onSubmit={handleSearch}
           onClear={handleClearSearch}
-          className="w-full max-w-[320px] shrink-0"
+          className="w-full max-w-80 shrink-0"
         />
       </div>
 
@@ -253,7 +253,7 @@ export function Header() {
             transition={{ duration: 0.2 }}
             className="fixed inset-0 z-50 flex flex-col overflow-hidden overscroll-none bg-black md:hidden"
           >
-            <div className="mx-auto flex h-16 w-full min-w-0 max-w-[393px] shrink-0 items-center justify-between px-4">
+            <div className="mx-auto flex h-16 w-full min-w-0 max-w-page shrink-0 items-center justify-between px-4">
               <Logo className="gap-1" />
               <button
                 type="button"
@@ -271,7 +271,7 @@ export function Header() {
                 />
               </button>
             </div>
-            <nav className="mx-auto flex w-full max-w-[393px] flex-col gap-4 px-4 pt-6">
+            <nav className="mx-auto flex w-full max-w-page flex-col gap-4 px-4 pt-6">
               {navLinks.map((link) => (
                 <MobileMenuNavLink
                   key={link.label}
