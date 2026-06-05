@@ -1,16 +1,17 @@
 import axios from 'axios';
+import { TMDB_API_KEY, TMDB_BASE_URL } from '@/lib/env';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_TMDB_BASE_URL,
+  baseURL: TMDB_BASE_URL,
   params: {
-    api_key: import.meta.env.VITE_TMDB_API_KEY,
+    api_key: TMDB_API_KEY,
   },
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-api.interceptors.request.use(
+api.interceptors.response.use(
   (response) => response,
   (error) => {
     const message = error.response?.data?.status_message || error.message || 'Something went wrong';

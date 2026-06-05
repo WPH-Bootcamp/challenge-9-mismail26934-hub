@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { IMAGE_SIZES } from '@/lib/constants';
+import { TMDB_IMAGE_BASE_URL } from '@/lib/env';
 import type { Movie } from '@/types/movie';
 
 // Utility function for merging Tailwind classes
@@ -15,8 +16,7 @@ export function getImageUrl(
   if (!path) {
     return '/placeholder-poster.svg';
   }
-  const base = import.meta.env.VITE_TMDB_IMAGE_BASE_URL;
-  return `${base}/${size}${path}`;
+  return `${TMDB_IMAGE_BASE_URL}/${size}${path}`;
 }
 
 export function getMovieTitle(movie: Movie): string {

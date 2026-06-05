@@ -10,6 +10,7 @@ import {
   useSearchMovies,
   useTrendingMovies,
 } from '@/hooks/useMovies';
+import { isTmdbConfigured } from '@/lib/env';
 import { filterMovies } from '@/lib/utils';
 
 export function HomePage() {
@@ -59,6 +60,12 @@ export function HomePage() {
 
   return (
     <main className="min-w-0 overflow-x-hidden">
+      {!isTmdbConfigured && (
+        <p className="container-page mx-auto px-4 py-3 text-center text-sm text-destructive">
+          TMDB API key is missing. Add <code className="text-foreground">VITE_TMDB_API_KEY</code> in
+          Vercel Environment Variables, then redeploy.
+        </p>
+      )}
       <HeroSection movie={heroMovie} isLoading={popular.isLoading} />
 
       <TrendingListItem
