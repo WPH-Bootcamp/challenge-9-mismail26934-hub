@@ -50,7 +50,6 @@ export function HomePage() {
   if (isSearching) {
     return (
       <SearchResultsSection
-        query={searchQuery}
         movies={searchResults}
         isLoading={search.isLoading}
         isError={search.isError}

@@ -80,9 +80,7 @@ export function HeroSection({ movie, isLoading }: HeroSectionProps) {
               {title}
             </h1>
 
-            <p className="hero-text__description line-clamp-4 md:line-clamp-4">
-              {movie.overview}
-            </p>
+            <p className="hero-text__description line-clamp-4 md:line-clamp-4">{movie.overview}</p>
           </div>
 
           <div className="mt-6 md:mt-12">

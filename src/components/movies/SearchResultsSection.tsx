@@ -4,7 +4,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import type { Movie } from '@/types/movie';
 
 interface SearchResultsSectionProps {
-  query: string;
   movies: Movie[];
   isLoading?: boolean;
   isError?: boolean;
@@ -29,7 +28,6 @@ function SearchResultSkeleton() {
 }
 
 export function SearchResultsSection({
-  query,
   movies,
   isLoading,
   isError,
@@ -53,7 +51,7 @@ export function SearchResultsSection({
           </p>
         )}
 
-        {!isLoading && !isError && !hasResults && <SearchEmptyState query={query} />}
+        {!isLoading && !isError && !hasResults && <SearchEmptyState />}
 
         {!isLoading && !isError && hasResults && (
           <div className="mt-4 md:mt-6">

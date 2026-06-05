@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useScrollLock } from '@/hooks/useScrollLock';
 import { cn } from '@/lib/utils';
 import { BrandLogo } from '@/components/layout/BrandLogo';
 import { SearchBar } from '@/components/layout/SearchBar';
-import arrowLeftIcon from '@/assets/icon/arrow-left.svg';
+import arrowSearchIcon from '@/assets/icon/arrow-search.svg';
 import menuCloseIcon from '@/assets/icon/menu-close.svg';
 import navbarSearchIcon from '@/assets/icon/navbar-search.svg';
 import menuHamburgerIcon from '@/assets/icon/menu-hamburger.svg';
@@ -64,7 +65,7 @@ function MobileMenuNavLink({
     <Link
       to={to}
       onClick={onClick}
-      className="p-2 text-base font-normal leading-[30px] text-white transition-opacity hover:opacity-80"
+      className="py-2 text-base font-normal leading-[30px] text-white transition-opacity hover:opacity-80"
     >
       {label}
     </Link>
@@ -79,10 +80,12 @@ export function Header() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get('q') ?? '';
+  const hasActiveSearch = Boolean(searchQuery.trim());
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
+  const showMobileSearch = searchOpen || hasActiveSearch;
   const showNavbarBlur = scrolled;
 
   useEffect(() => {
@@ -100,23 +103,25 @@ export function Header() {
   }, [location.pathname]);
 
   useEffect(() => {
-    setSearchOpen(false);
     setMobileMenuOpen(false);
-  }, [location.pathname, location.search]);
+    if (!hasActiveSearch) {
+      setSearchOpen(false);
+    }
+  }, [location.pathname, location.search, hasActiveSearch]);
 
-  useEffect(() => {
-    if (!mobileMenuOpen) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [mobileMenuOpen]);
+  useScrollLock(mobileMenuOpen);
 
   const handleSearch = (query: string) => {
     navigate(`/?q=${encodeURIComponent(query)}`);
-    setSearchOpen(false);
     setMobileMenuOpen(false);
+  };
+
+  const closeMobileSearch = () => {
+    if (hasActiveSearch && location.pathname === '/') {
+      navigate('/');
+      return;
+    }
+    setSearchOpen(false);
   };
 
   const handleClearSearch = () => {
@@ -136,7 +141,7 @@ export function Header() {
         'fixed inset-x-0 top-0 z-50 w-full transition-colors duration-300',
         showNavbarBlur
           ? NAVBAR_BLUR
-          : mobileMenuOpen || searchOpen
+          : mobileMenuOpen || showMobileSearch
             ? NAVBAR_BLACK
             : 'bg-transparent'
       )}
@@ -146,19 +151,19 @@ export function Header() {
         <div
           className={cn(
             'mx-auto flex h-16 w-full min-w-0 max-w-[393px] items-center px-4 md:hidden',
-            searchOpen ? 'gap-4' : 'justify-between'
+            showMobileSearch ? 'gap-4' : 'justify-between'
           )}
         >
-          {searchOpen ? (
+          {showMobileSearch ? (
             <>
               <button
                 type="button"
-                onClick={() => setSearchOpen(false)}
+                onClick={closeMobileSearch}
                 className="flex h-6 w-6 shrink-0 items-center justify-center transition-opacity hover:opacity-80"
                 aria-label="Close search"
               >
                 <img
-                  src={arrowLeftIcon}
+                  src={arrowSearchIcon}
                   alt=""
                   aria-hidden
                   width={24}
@@ -171,7 +176,7 @@ export function Header() {
                 defaultQuery={searchQuery}
                 onSubmit={handleSearch}
                 onClear={handleClearSearch}
-                autoFocus
+                autoFocus={searchOpen && !hasActiveSearch}
                 className="min-w-0 flex-1"
               />
             </>
@@ -187,7 +192,7 @@ export function Header() {
                   }}
                   className="flex h-6 w-6 items-center justify-center transition-opacity hover:opacity-80"
                   aria-label="Search"
-                  aria-expanded={searchOpen}
+                  aria-expanded={showMobileSearch}
                 >
                   <img
                     src={navbarSearchIcon}
@@ -246,10 +251,10 @@ export function Header() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex flex-col bg-black md:hidden"
+            className="fixed inset-0 z-50 flex flex-col overflow-hidden overscroll-none bg-black md:hidden"
           >
-            <div className="mx-auto flex h-16 w-full max-w-[393px] shrink-0 items-center justify-between">
-              <Logo />
+            <div className="mx-auto flex h-16 w-full min-w-0 max-w-[393px] shrink-0 items-center justify-between px-4">
+              <Logo className="gap-1" />
               <button
                 type="button"
                 onClick={closeMobile}

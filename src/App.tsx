@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Header } from '@/components/layout/Header';
+import { ScrollToTop } from '@/components/layout/ScrollToTop';
 import { Footer } from '@/components/layout/Footer';
 import { FavoriteToast } from '@/components/ui/FavoriteToast';
 import { HomePage } from '@/pages/HomePage';
@@ -9,6 +10,7 @@ import { MovieDetailPage } from '@/pages/MovieDetailPage';
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <div className="flex min-h-screen w-full min-w-0 flex-col">
         <FavoriteToast />
         <Header />

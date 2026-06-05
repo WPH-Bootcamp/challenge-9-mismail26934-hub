@@ -62,19 +62,19 @@ export function MovieDetailPage() {
 
   return (
     <main className="w-full min-w-0 overflow-x-hidden pb-8">
-      <section className="relative w-full min-w-0 bg-black md:min-h-[480px]">
-        <div className="relative hidden w-full md:absolute md:inset-0 md:block md:h-full md:min-h-[480px]">
+      <section className="relative w-full min-w-0 overflow-hidden bg-black md:min-h-[480px]">
+        <div className="absolute inset-0 w-full md:min-h-[480px]">
           <img
             src={getImageUrl(movie.backdrop_path, IMAGE_SIZES.backdrop.large)}
             alt=""
             className="absolute inset-0 h-full w-full object-cover"
           />
           <div className="hero-gradient absolute inset-0" />
-          <div className="hero-gradient-side absolute inset-0" />
+          <div className="hero-gradient-side absolute inset-0 hidden md:block" />
         </div>
 
-        <div className="container-page relative mx-auto max-md:max-w-[393px]">
-          <div className="pb-2 pt-20 md:relative md:pb-10 md:pt-24">
+        <div className="container-page relative z-10 mx-auto max-md:max-w-[393px]">
+          <div className="pb-2 pt-[calc(4rem+158px)] md:relative md:pb-10 md:pt-[322px]">
             <div className="flex flex-row items-start gap-4 md:gap-8">
               <motion.img
                 initial={{ opacity: 0, scale: 0.95 }}
@@ -141,6 +141,14 @@ export function MovieDetailPage() {
                 trailerKey={trailer?.key}
                 favorite={favorite}
                 onFavoriteClick={handleFavoriteClick}
+              />
+            </div>
+
+            <div className="mt-4 grid grid-cols-3 gap-2 md:hidden">
+              <DetailStats
+                voteAverage={movie.vote_average}
+                genre={primaryGenre}
+                adult={movie.adult}
               />
             </div>
           </div>
@@ -217,9 +225,7 @@ function DetailActions({
             <PlayIcon />
           </a>
         </Button>
-      ) : (
-        <div className="min-w-0 flex-1" />
-      )}
+      ) : null}
       <FavoriteCircleButton favorited={favorite} onClick={onFavoriteClick} />
     </div>
   );
@@ -246,28 +252,36 @@ function DetailStats({
 function DetailSkeleton() {
   return (
     <main className="w-full min-w-0 overflow-x-hidden bg-black pb-8">
-      <div className="relative hidden h-[200px] w-full md:block md:min-h-[480px]">
-        <Skeleton className="absolute inset-0 rounded-none" />
-      </div>
-      <div className="container-page relative mx-auto max-md:max-w-[393px] md:pt-24">
-        <div className="flex flex-row gap-4 pt-20 md:mt-0 md:pt-0">
-          <Skeleton className="aspect-[2/3] w-[120px] shrink-0 rounded-xl" />
-          <div className="min-w-0 flex-1 space-y-3">
-            <Skeleton className="h-6 w-full" />
-            <Skeleton className="h-4 w-20 md:hidden" />
-            <Skeleton className="h-10 w-full md:hidden" />
-            <Skeleton className="hidden h-4 w-32 md:block" />
+      <section className="relative w-full overflow-hidden md:min-h-[480px]">
+        <Skeleton className="absolute inset-0 h-full min-h-[360px] rounded-none md:min-h-[480px]" />
+        <div className="hero-gradient absolute inset-0" />
+        <div className="container-page relative z-10 mx-auto max-md:max-w-[393px] md:pt-[322px]">
+          <div className="flex flex-row gap-4 pb-2 pt-[calc(4rem+158px)] md:mt-0 md:pb-10 md:pt-0">
+            <Skeleton className="aspect-[2/3] w-[120px] shrink-0 rounded-xl" />
+            <div className="min-w-0 flex-1 space-y-3">
+              <Skeleton className="h-6 w-full" />
+              <Skeleton className="h-4 w-20 md:hidden" />
+              <Skeleton className="h-10 w-full md:hidden" />
+              <Skeleton className="hidden h-4 w-32 md:block" />
+            </div>
+          </div>
+          <div className="mt-4 flex gap-3 md:hidden">
+            <Skeleton className="h-11 flex-1 rounded-full" />
+            <Skeleton className="h-11 w-11 shrink-0 rounded-full" />
+          </div>
+          <div className="mt-4 grid grid-cols-3 gap-2 md:hidden">
+            <Skeleton className="h-[88px] w-full rounded-xl" />
+            <Skeleton className="h-[88px] w-full rounded-xl" />
+            <Skeleton className="h-[88px] w-full rounded-xl" />
+          </div>
+          <div className="mt-4 hidden md:grid md:grid-cols-3 md:justify-items-center md:gap-5">
+            <Skeleton className="h-[146px] w-full max-w-[276px] rounded-2xl" />
+            <Skeleton className="h-[146px] w-full max-w-[276px] rounded-2xl" />
+            <Skeleton className="h-[146px] w-full max-w-[276px] rounded-2xl" />
           </div>
         </div>
-        <div className="mt-4 flex gap-3 md:hidden">
-          <Skeleton className="h-11 flex-1 rounded-full" />
-          <Skeleton className="h-11 w-11 shrink-0 rounded-full" />
-        </div>
-        <div className="mt-4 hidden md:grid md:grid-cols-3 md:justify-items-center md:gap-5">
-          <Skeleton className="h-[146px] w-full max-w-[276px] rounded-2xl" />
-          <Skeleton className="h-[146px] w-full max-w-[276px] rounded-2xl" />
-          <Skeleton className="h-[146px] w-full max-w-[276px] rounded-2xl" />
-        </div>
+      </section>
+      <div className="container-page mx-auto max-md:max-w-[393px]">
         <Skeleton className="mt-8 h-6 w-32" />
         <Skeleton className="mt-4 h-24 w-full" />
         <Skeleton className="mt-10 h-6 w-36" />
