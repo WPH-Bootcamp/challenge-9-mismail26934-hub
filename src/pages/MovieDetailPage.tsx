@@ -130,7 +130,7 @@ export function MovieDetailPage() {
                   <DetailStats
                     voteAverage={movie.vote_average}
                     genre={primaryGenre}
-                    adult={movie.adult}
+                    adult={movie.adult ?? false}
                   />
                 </div>
               </motion.div>
@@ -148,7 +148,7 @@ export function MovieDetailPage() {
               <DetailStats
                 voteAverage={movie.vote_average}
                 genre={primaryGenre}
-                adult={movie.adult}
+                adult={movie.adult ?? false}
               />
             </div>
           </div>
