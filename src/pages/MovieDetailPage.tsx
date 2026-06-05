@@ -208,7 +208,7 @@ function DetailActions({
   onFavoriteClick: () => void;
 }) {
   return (
-    <div className="flex w-full items-center gap-3">
+    <div className="flex w-full items-center gap-4 md:gap-3">
       {trailerKey ? (
         <Button
           asChild
@@ -265,7 +265,7 @@ function DetailSkeleton() {
               <Skeleton className="hidden h-4 w-32 md:block" />
             </div>
           </div>
-          <div className="mt-4 flex gap-3 md:hidden">
+          <div className="mt-4 flex gap-4 md:hidden">
             <Skeleton className="h-11 flex-1 rounded-full" />
             <Skeleton className="h-11 w-11 shrink-0 rounded-full" />
           </div>

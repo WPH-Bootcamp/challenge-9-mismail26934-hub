@@ -45,12 +45,12 @@ export function HeroSection({ movie, isLoading }: HeroSectionProps) {
     return (
       <section className="relative min-h-130 w-full min-w-0 overflow-hidden md:h-150 md:min-h-0">
         <Skeleton className="absolute inset-0 rounded-none" />
-        <div className="hero-inner container-page relative mx-auto flex h-full min-h-130 flex-col pb-8 max-md:max-w-page md:min-h-0 md:pb-14 md:pt-24">
+        <div className="hero-inner container-page relative mx-auto flex h-full min-h-130 flex-col gap-6 pb-8 max-md:max-w-page md:min-h-0 md:gap-0 md:pb-14 md:pt-24">
           <div className="hero-text w-full min-w-0">
             <Skeleton className="h-8 w-3/4 max-w-lg" />
             <Skeleton className="h-30 w-full max-w-xl md:h-16" />
           </div>
-          <div className="mt-6 flex w-full min-w-0 flex-col gap-2 md:mt-0 md:max-w-none md:flex-row md:gap-3">
+          <div className="flex w-full min-w-0 flex-col gap-2 md:max-w-none md:flex-row md:gap-3">
             <Skeleton className="h-11 w-full rounded-full md:h-13 md:w-230" />
             <Skeleton className="h-11 w-full rounded-full md:h-13 md:w-230" />
           </div>
@@ -68,12 +68,12 @@ export function HeroSection({ movie, isLoading }: HeroSectionProps) {
       <div className="gradient-hero-side absolute inset-0 hidden md:block" />
       <div className="gradient-hero-vertical absolute inset-0" />
 
-      <div className="hero-inner container-page relative mx-auto flex h-full min-h-130 flex-col pb-8 max-md:max-w-page md:min-h-0 md:pb-14 md:pt-24">
+      <div className="hero-inner container-page relative mx-auto flex h-full min-h-130 flex-col gap-6 pb-8 max-md:max-w-page md:min-h-0 md:gap-0 md:pb-14 md:pt-24">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="w-full min-w-0 max-w-2xl"
+          className="flex w-full min-w-0 max-w-2xl flex-col gap-6 md:gap-12"
         >
           <div className="hero-text">
             <h1 className="break-words text-2xl font-bold leading-tight text-foreground md:text-4xl lg:text-5xl">
@@ -83,9 +83,7 @@ export function HeroSection({ movie, isLoading }: HeroSectionProps) {
             <p className="text-body-muted line-clamp-4 md:line-clamp-4">{movie.overview}</p>
           </div>
 
-          <div className="mt-6 md:mt-12">
-            <HeroActions movieId={movie.id} trailerKey={trailerKey} />
-          </div>
+          <HeroActions movieId={movie.id} trailerKey={trailerKey} />
         </motion.div>
       </div>
     </section>

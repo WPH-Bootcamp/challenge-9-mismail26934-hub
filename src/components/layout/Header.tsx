@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-do
 import { motion, AnimatePresence } from 'framer-motion';
 import { useScrollLock } from '@/hooks/useScrollLock';
 import { cn } from '@/lib/utils';
+import { useMovieStore } from '@/store/movieStore';
 import { BrandLogo } from '@/components/layout/BrandLogo';
 import { SearchBar } from '@/components/layout/SearchBar';
 import arrowSearchIcon from '@/assets/icon/arrow-search.svg';
@@ -19,16 +20,33 @@ function Logo({ className }: { className?: string }) {
   return <BrandLogo className={className} compact />;
 }
 
+function FavoriteCountBadge({ count }: { count: number }) {
+  if (count <= 0) return null;
+
+  const display = count > 99 ? '99+' : String(count);
+
+  return (
+    <span
+      className="inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-primary px-1 text-xs font-semibold leading-none text-primary-foreground"
+      aria-hidden
+    >
+      {display}
+    </span>
+  );
+}
+
 function NavLink({
   label,
   to,
   onClick,
   className,
+  badgeCount,
 }: {
   label: string;
   to: string;
   onClick?: () => void;
   className?: string;
+  badgeCount?: number;
 }) {
   const location = useLocation();
   const isHash = to.includes('#');
@@ -37,17 +55,21 @@ function NavLink({
     ? location.pathname === '/' && location.hash === `#${hash}`
     : location.pathname === to;
 
+  const showBadge = badgeCount !== undefined && badgeCount > 0;
+
   return (
     <Link
       to={to}
       onClick={onClick}
+      aria-label={showBadge ? `${label}, ${badgeCount} items` : undefined}
       className={cn(
-        'text-sm font-normal text-foreground transition-colors hover:text-foreground/80',
+        'inline-flex items-center gap-1.5 text-sm font-normal text-foreground transition-colors hover:text-foreground/80',
         isActive ? 'text-foreground' : 'text-foreground/90',
         className
       )}
     >
       {label}
+      {badgeCount !== undefined ? <FavoriteCountBadge count={badgeCount} /> : null}
     </Link>
   );
 }
@@ -56,18 +78,24 @@ function MobileMenuNavLink({
   label,
   to,
   onClick,
+  badgeCount,
 }: {
   label: string;
   to: string;
   onClick?: () => void;
+  badgeCount?: number;
 }) {
+  const showBadge = badgeCount !== undefined && badgeCount > 0;
+
   return (
     <Link
       to={to}
       onClick={onClick}
-      className="py-2 text-base font-normal leading-7.5 text-foreground transition-opacity hover:opacity-80"
+      aria-label={showBadge ? `${label}, ${badgeCount} items` : undefined}
+      className="inline-flex items-center gap-2 py-2 text-base font-normal leading-7.5 text-foreground transition-opacity hover:opacity-80"
     >
       {label}
+      {badgeCount !== undefined ? <FavoriteCountBadge count={badgeCount} /> : null}
     </Link>
   );
 }
@@ -84,6 +112,7 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const favoriteCount = useMovieStore((s) => s.favorites.length);
 
   const showMobileSearch = searchOpen || hasActiveSearch;
   const showNavbarBlur = scrolled;
@@ -231,7 +260,12 @@ export function Header() {
           <BrandLogo />
           <nav className="flex items-center gap-8">
             {navLinks.map((link) => (
-              <NavLink key={link.label} label={link.label} to={link.to} />
+              <NavLink
+                key={link.label}
+                label={link.label}
+                to={link.to}
+                badgeCount={link.to === '/favorites' ? favoriteCount : undefined}
+              />
             ))}
           </nav>
         </div>
@@ -278,6 +312,7 @@ export function Header() {
                   label={link.label}
                   to={link.to}
                   onClick={closeMobile}
+                  badgeCount={link.to === '/favorites' ? favoriteCount : undefined}
                 />
               ))}
             </nav>

@@ -35,49 +35,58 @@ export function SearchResultListItem({ movie }: SearchResultListItemProps) {
           />
         </Link>
 
-        <div className="flex min-w-0 flex-1 flex-col">
-          <Link to={`/movie/${movie.id}`} className="w-fit">
-            <h3 className="text-base font-bold leading-tight text-foreground md:text-2xl md:leading-tight">
-              {title}
-            </h3>
-          </Link>
+        <div className="flex min-w-0 flex-1 items-start md:gap-126">
+          <div className="flex min-w-0 flex-1 flex-col">
+            <Link to={`/movie/${movie.id}`} className="w-fit">
+              <h3 className="text-base font-bold leading-tight text-foreground md:text-2xl md:leading-tight">
+                {title}
+              </h3>
+            </Link>
 
-          <p className="mt-2 flex items-center gap-2 text-sm text-foreground md:mt-3 md:text-base">
-            <img src={starIcon} alt="" aria-hidden width={20} height={20} className="h-5 w-5 shrink-0" />
-            {formatRating(movie.vote_average)}
-          </p>
+            <p className="mt-2 flex items-center gap-2 text-sm text-foreground md:mt-3 md:text-base">
+              <img
+                src={starIcon}
+                alt=""
+                aria-hidden
+                width={20}
+                height={20}
+                className="h-5 w-5 shrink-0"
+              />
+              {formatRating(movie.vote_average)}
+            </p>
 
-          <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-body-muted md:mt-3 md:text-base md:leading-7">
-            {movie.overview}
-          </p>
+            <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-body-muted md:mt-3 md:text-base md:leading-7">
+              {movie.overview}
+            </p>
 
-          {trailer && (
-            <Button
-              asChild
-              variant="primary"
-              size="hero"
-              className="mt-4 hidden md:mt-6 md:inline-flex md:w-230"
-            >
-              <a
-                href={`https://www.youtube.com/watch?v=${trailer.key}`}
-                target="_blank"
-                rel="noreferrer"
+            {trailer && (
+              <Button
+                asChild
+                variant="primary"
+                size="hero"
+                className="mt-4 hidden md:mt-6 md:inline-flex md:w-230"
               >
-                Watch Trailer
-                <PlayIcon />
-              </a>
-            </Button>
-          )}
-        </div>
+                <a
+                  href={`https://www.youtube.com/watch?v=${trailer.key}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Watch Trailer
+                  <PlayIcon />
+                </a>
+              </Button>
+            )}
+          </div>
 
-        <FavoriteCircleButton
-          favorited={favorited}
-          onClick={() => toggleFavorite(movie)}
-          className="hidden md:flex"
-        />
+          <FavoriteCircleButton
+            favorited={favorited}
+            onClick={() => toggleFavorite(movie)}
+            className="hidden md:flex"
+          />
+        </div>
       </div>
 
-      <div className="mt-4 flex items-center gap-3 md:hidden">
+      <div className="mt-4 flex items-center gap-4 md:hidden">
         {trailer ? (
           <Button asChild variant="primary" size="hero" className="min-w-0 flex-1">
             <a

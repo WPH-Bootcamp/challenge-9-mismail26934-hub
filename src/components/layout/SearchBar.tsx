@@ -91,14 +91,23 @@ export function SearchBar({
   return (
     <div className={cn('w-full', className)}>
       <form onSubmit={submit} className={cn(containerBase, styles.container)}>
-        <img
-          src={searchIcon}
-          alt=""
-          aria-hidden
-          width={styles.searchIconSize}
-          height={styles.searchIconSize}
-          className={cn('pointer-events-none shrink-0', styles.searchIcon)}
-        />
+        <button
+          type="submit"
+          className={cn(
+            'flex shrink-0 items-center justify-center transition-opacity hover:opacity-80',
+            styles.searchIcon
+          )}
+          aria-label="Search"
+        >
+          <img
+            src={searchIcon}
+            alt=""
+            aria-hidden
+            width={styles.searchIconSize}
+            height={styles.searchIconSize}
+            className={styles.searchIcon}
+          />
+        </button>
         <Input
           {...register('query')}
           type="search"

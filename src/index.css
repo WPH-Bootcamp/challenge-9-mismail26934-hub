@@ -53,16 +53,28 @@
   /* Figma layout — nilai di luar skala default Tailwind */
   --spacing-89: 5.5625rem;
   --spacing-114: 7.125rem;
+  --spacing-126: 7.875rem;
   --spacing-134: 8.375rem;
   --spacing-146: 9.125rem;
   --spacing-158: 9.875rem;
   --spacing-159: 9.9375rem;
+  --spacing-173: 10.8125rem;
+  --spacing-195: 12.15625rem;
+  --spacing-200: 12.5rem;
+  --spacing-216: 13.5rem;
   --spacing-230: 14.375rem;
-  --spacing-236: 14.75rem;
+  --spacing-266: 16.625rem;
   --spacing-276: 17.25rem;
+  --spacing-294: 18.34375rem;
+  --spacing-321: 20.0625rem;
   --spacing-322: 20.125rem;
   --spacing-361: 22.5625rem;
   --spacing-531: 33.1875rem;
+
+  --spacing-poster-gap: 1.25rem; /* 20px — mobile */
+  --spacing-poster-gap-md: 1rem; /* 16px — desktop */
+
+  --trending-carousel-peek: 6.75rem;
 
   --max-width-page: 24.5625rem;
 
@@ -72,6 +84,77 @@
 
 @utility aspect-poster {
   aspect-ratio: 2 / 3;
+}
+
+/* Trending / New Release — mobile 173×266, desktop (md+) 216×321 */
+/* Card gap — mobile 20px, desktop (md+) 16px */
+@utility gap-poster {
+  gap: var(--spacing-poster-gap);
+
+  @media (width >= 48rem) {
+    gap: var(--spacing-poster-gap-md);
+  }
+}
+
+/* New Release grid — fluid columns so each row fits N cards (xl = 5) */
+@utility grid-poster-release {
+  display: grid;
+  width: 100%;
+  gap: var(--spacing-poster-gap);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  @media (width >= 48rem) {
+    gap: var(--spacing-poster-gap-md);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  @media (width >= 64rem) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  @media (width >= 80rem) {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+/* New Release card — clamp so N cards fit per row (max = Figma size) */
+@utility size-poster-card-release {
+  width: clamp(6.5rem, 100%, var(--spacing-173));
+  height: auto;
+  aspect-ratio: 173 / 266;
+
+  @media (width >= 48rem) {
+    width: clamp(8rem, 100%, var(--spacing-216));
+    aspect-ratio: 216 / 321;
+  }
+}
+
+@utility w-poster-card-release {
+  width: 100%;
+  min-width: 0;
+}
+
+@utility w-poster-card {
+  width: var(--spacing-173);
+
+  @media (width >= 48rem) {
+    width: var(--spacing-216);
+  }
+}
+
+@utility size-poster-card {
+  width: var(--spacing-173);
+  height: var(--spacing-266);
+
+  @media (width >= 48rem) {
+    width: var(--spacing-216);
+    height: var(--spacing-321);
+  }
+}
+
+@utility w-poster-card-trending {
+  width: 100%;
+  min-width: 0;
 }
 
 @utility top-card-fade {
@@ -103,6 +186,56 @@
   backdrop-filter: blur(40px);
 }
 
+/* Trending carousel nav button — Figma desktop */
+@utility trending-carousel-nav-btn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  box-sizing: border-box;
+  position: absolute;
+  z-index: 10;
+  border: 0;
+  border-radius: 9999px !important;
+  padding: 0;
+  color: var(--color-white);
+  box-shadow: none;
+  overflow: hidden;
+  background: rgb(10 13 18 / 0.6) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  backdrop-filter: blur(20px) !important;
+  width: 2.25rem;
+  height: 2.25rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: rgb(10 13 18 / 0.8) !important;
+    color: var(--color-white) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    backdrop-filter: blur(20px) !important;
+  }
+
+  &:active:not(:disabled) {
+    background: rgb(10 13 18 / 0.9) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    backdrop-filter: blur(20px) !important;
+  }
+
+  &:disabled {
+    pointer-events: none;
+    opacity: 0;
+    cursor: not-allowed;
+  }
+
+  @media (width >= 48rem) {
+    width: 56px !important;
+    height: 56px !important;
+    padding: 8px !important;
+  }
+}
+
 @utility surface-outline {
   border: 1px solid var(--color-border);
   background-color: var(--color-background);
@@ -130,15 +263,24 @@
   );
 }
 
-/* Figma page frame desktop horizontal padding */
+/* Figma page frame — shared horizontal gutter (navbar left = section right) */
 @utility container-page {
   width: 100%;
   max-width: 1440px;
   margin-inline: auto;
-  padding-inline: 1rem;
+  --page-padding-inline: clamp(1rem, calc(1rem + (100vw - 393px) * 124 / 1047), 8.75rem);
+  padding-inline: var(--page-padding-inline);
+}
+
+/* Page inner — gutters match navbar (mobile 16px, desktop container-page clamp) */
+@utility page-inner {
+  width: 100%;
+  max-width: var(--max-width-page);
+  margin-inline: auto;
+  padding-inline: var(--page-padding-inline);
 
   @media (width >= 48rem) {
-    padding-inline: 8.75rem;
+    max-width: 1440px;
   }
 }
 
@@ -168,19 +310,43 @@
 }
 
 @layer utilities {
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  /* New Release — card bottom fade (last row blend) */
+  .new-release-card-fade {
+    background: linear-gradient(
+      180deg,
+      rgb(0 0 0 / 0) 0%,
+      rgb(0 0 0 / 0.45) 55%,
+      var(--color-background) 100%
+    );
   }
 
-  .scrollbar-hide::-webkit-scrollbar {
+  /* Trending — peek card poster bottom fade (Figma card 6) */
+  .trending-poster-bottom-fade {
     display: none;
+    background: linear-gradient(
+      180deg,
+      rgb(0 0 0 / 0) 0%,
+      rgb(0 0 0 / 0.45) 55%,
+      var(--color-background) 100%
+    );
+  }
+
+  /* Trending — right-edge fade over peek card (Figma) */
+  .trending-carousel-fade {
+    position: absolute;
+    inset-block: 0;
+    right: 0;
+    z-index: 5;
+    width: var(--trending-carousel-peek);
+    pointer-events: none;
+    background: linear-gradient(270deg, #000000 0%, rgb(0 0 0 / 0) 100%);
   }
 
   /* Hero inner — mobile */
   @media (width < 48rem) {
     .hero-inner {
-      padding-top: calc(var(--spacing-16) + var(--spacing-159));
+      /* navbar h-16 (64px) + 159px gap to hero text */
+      padding-top: calc(var(--spacing) * 16 + var(--spacing-159));
       justify-content: flex-start;
     }
 
@@ -191,7 +357,6 @@
       gap: 0.375rem; /* gap-1.5 */
       width: 100%;
       max-width: var(--spacing-361);
-      min-height: 182px;
     }
   }
 
@@ -227,36 +392,154 @@
     }
   }
 
-  /* New Release — bottom fade to solid black (Figma mobile) */
-  .new-release-bottom-fade {
-    position: absolute;
-    inset-inline: 0;
-    bottom: 0;
-    z-index: 5;
-    width: 100%;
-    height: var(--spacing-55);
-    border-radius: 0;
-    background: linear-gradient(
-      180deg,
-      rgb(0 0 0 / 0) 0%,
-      rgb(0 0 0 / 0.35) 38%,
-      var(--color-background) 72%,
-      var(--color-background) 100%
-    );
+  /* Shared page gutters — navbar left padding = section content inset */
+  .page-section {
+    --page-padding-inline: 1rem;
   }
 
-  /* New Release — desktop fade */
   @media (width >= 48rem) {
-    .new-release-bottom-fade {
-      height: var(--spacing-124);
-      background: linear-gradient(
-        180deg,
-        rgb(0 0 0 / 0) 0%,
-        rgb(0 0 0 / 0.25) 25%,
-        rgb(0 0 0 / 0.7) 55%,
-        var(--color-background) 79.44%,
-        var(--color-background) 100%
-      );
+    .page-section {
+      --page-padding-inline: clamp(1rem, calc(1rem + (100vw - 393px) * 124 / 1047), 8.75rem);
     }
+  }
+
+  /* Trending — same cols/gap/clamp as New Release; next card peeks right */
+  .trending-carousel-shell {
+    width: 100%;
+    container-type: inline-size;
+    --poster-cols: 2;
+    --poster-gap: var(--spacing-poster-gap);
+  }
+
+  @media (width >= 48rem) {
+    .trending-carousel-shell {
+      --poster-cols: 3;
+      --poster-gap: var(--spacing-poster-gap-md);
+    }
+  }
+
+  @media (width >= 64rem) {
+    .trending-carousel-shell {
+      --poster-cols: 4;
+    }
+  }
+
+  @media (width >= 80rem) {
+    .trending-carousel-shell {
+      --poster-cols: 5;
+    }
+  }
+
+  .trending-carousel-peek {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    isolation: isolate;
+  }
+
+  @media (width >= 48rem) {
+    .trending-carousel-peek {
+      width: calc(100% + var(--trending-carousel-peek));
+      margin-inline-end: calc(-1 * var(--trending-carousel-peek));
+    }
+  }
+
+  .size-poster-card-trending {
+    width: clamp(
+      6.5rem,
+      calc((100cqw - (var(--poster-cols) - 1) * var(--poster-gap)) / var(--poster-cols)),
+      var(--spacing-173)
+    );
+    height: auto;
+    aspect-ratio: 173 / 266;
+  }
+
+  @media (width >= 48rem) {
+    .size-poster-card-trending {
+      width: clamp(
+        8rem,
+        calc((100cqw - (var(--poster-cols) - 1) * var(--poster-gap)) / var(--poster-cols)),
+        var(--spacing-216)
+      );
+      aspect-ratio: 216 / 321;
+    }
+  }
+
+  /* Trending nav — vertically centered on poster; 5px inset on mobile */
+  .trending-carousel-nav {
+    --trending-poster-w: clamp(
+      6.5rem,
+      calc((100cqw - (var(--poster-cols) - 1) * var(--poster-gap)) / var(--poster-cols)),
+      var(--spacing-173)
+    );
+    top: calc(var(--trending-poster-w) * 266 / 173 / 2);
+    right: 5px;
+    transform: translateY(-50%);
+    border-radius: 9999px;
+    background: rgb(10 13 18 / 0.6);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+  }
+
+  .trending-carousel-nav img {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  @media (width >= 48rem) {
+    .trending-carousel-nav {
+      --trending-poster-w: clamp(
+        8rem,
+        calc((100cqw - (var(--poster-cols) - 1) * var(--poster-gap)) / var(--poster-cols)),
+        var(--spacing-216)
+      );
+      top: calc(var(--trending-poster-w) * 321 / 216 / 2);
+      right: 0.5rem;
+    }
+
+    /* Figma desktop — icon fixed 28×28 */
+    .trending-carousel-nav img {
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  /* Peek card = first partially visible card per column count */
+  @media (width >= 48rem) {
+    .trending-carousel-peek [role='group']:nth-child(4) .trending-poster-bottom-fade {
+      display: block;
+    }
+  }
+
+  @media (width >= 64rem) {
+    .trending-carousel-peek [role='group']:nth-child(4) .trending-poster-bottom-fade {
+      display: none;
+    }
+
+    .trending-carousel-peek [role='group']:nth-child(5) .trending-poster-bottom-fade {
+      display: block;
+    }
+  }
+
+  @media (width >= 80rem) {
+    .trending-carousel-peek [role='group']:nth-child(5) .trending-poster-bottom-fade {
+      display: none;
+    }
+
+    .trending-carousel-peek [role='group']:nth-child(6) .trending-poster-bottom-fade {
+      display: block;
+    }
+  }
+
+  /* New Release — bottom fade aligned with content gutters */
+  .new-release-bottom-fade {
+    position: absolute;
+    top: var(--new-release-fade-top, 0);
+    right: max(var(--page-padding-inline), calc((100vw - 1440px) / 2 + var(--page-padding-inline)));
+    bottom: 0;
+    left: max(var(--page-padding-inline), calc((100vw - 1440px) / 2 + var(--page-padding-inline)));
+    z-index: 5;
+    border-radius: 0;
+    background: linear-gradient(180deg, rgb(0 0 0 / 0) -124.9%, #000000 79.44%);
   }
 }

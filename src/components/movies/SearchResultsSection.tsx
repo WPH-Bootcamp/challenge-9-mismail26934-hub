@@ -27,11 +27,7 @@ function SearchResultSkeleton() {
   );
 }
 
-export function SearchResultsSection({
-  movies,
-  isLoading,
-  isError,
-}: SearchResultsSectionProps) {
+export function SearchResultsSection({ movies, isLoading, isError }: SearchResultsSectionProps) {
   const hasResults = movies.length > 0;
 
   return (

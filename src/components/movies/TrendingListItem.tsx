@@ -13,8 +13,7 @@ import {
 import { cn } from '@/lib/utils';
 import type { Movie } from '@/types/movie';
 
-const overlayNavClass =
-  'absolute z-10 flex h-9 w-9 items-center justify-center rounded-full border-0 bg-black/60 p-0 text-white shadow-none backdrop-blur-md hover:bg-black/75 disabled:pointer-events-none disabled:opacity-0 md:h-10 md:w-10';
+const overlayNavClass = 'trending-carousel-nav-btn border-0! shadow-none!';
 
 interface TrendingListItemProps {
   id?: string;
@@ -39,8 +38,11 @@ export function TrendingListItem({
   const isOverlayNav = carouselNav === 'overlay';
 
   return (
-    <section id={id} className="overflow-x-hidden py-8 md:py-12">
-      <div className="container-page mx-auto w-full min-w-0 max-md:max-w-page">
+    <section
+      id={id}
+      className="page-section max-md:overflow-x-hidden py-8 md:overflow-visible md:py-12"
+    >
+      <div className="page-inner">
         {isLoading && (
           <>
             {title && (
@@ -48,13 +50,12 @@ export function TrendingListItem({
                 {title}
               </h2>
             )}
-            <div className="grid grid-cols-2 gap-4 md:flex md:overflow-hidden">
-              {Array.from({ length: 4 }).map((_, i) => (
-                <Skeleton
-                  key={i}
-                  className="aspect-poster w-full rounded-xl md:h-60 md:w-45 md:shrink-0 md:aspect-auto lg:w-50"
-                />
-              ))}
+            <div className="trending-carousel-shell">
+              <div className="trending-carousel-peek flex gap-poster overflow-hidden">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <Skeleton key={i} className="size-poster-card-trending shrink-0 rounded-2xl" />
+                ))}
+              </div>
             </div>
           </>
         )}
@@ -94,58 +95,48 @@ export function TrendingListItem({
                 </div>
                 {!isOverlayNav && (
                   <div className="flex shrink-0 gap-2">
-                    <CarouselPrevious />
-                    <CarouselNext />
+                    <CarouselPrevious className="h-10 w-10 rounded-lg" />
+                    <CarouselNext className="h-10 w-10 rounded-lg" />
                   </div>
                 )}
               </motion.div>
             )}
 
-            <div className={cn('relative min-w-0 overflow-hidden', isOverlayNav && 'md:-mr-4')}>
-              <CarouselContent className="-ml-4">
-                {movies.map((movie, index) => (
-                  <CarouselItem
-                    key={movie.id}
-                    className="basis-1/2 pl-4 md:basis-45 lg:basis-50"
-                  >
-                    <MovieCard movie={movie} index={index} rank={index + 1} variant="carousel" />
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
+            <div className="trending-carousel-shell">
+              <div className="trending-carousel-peek">
+                <CarouselContent className="ml-0 gap-poster">
+                  {movies.map((movie, index) => (
+                    <CarouselItem key={movie.id} className="shrink-0 basis-auto pl-0">
+                      <MovieCard movie={movie} index={index} rank={index + 1} variant="carousel" />
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
 
-              {isOverlayNav && (
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-y-0 right-0 z-5 w-16 bg-gradient-to-l from-background via-background/80 to-transparent sm:w-20 md:w-24"
-                />
-              )}
+                {isOverlayNav && (
+                  <div aria-hidden className="trending-carousel-fade hidden md:block" />
+                )}
 
-              {isOverlayNav ? (
-                <CarouselNext
-                  variant="ghost"
-                  className={cn(
-                    overlayNavClass,
-                    'right-0 top-27 -translate-y-1/2 md:top-29 md:right-4'
-                  )}
-                />
-              ) : (
-                <>
-                  <CarouselPrevious
-                    variant="ghost"
-                    className={cn(
-                      overlayNavClass,
-                      'left-0 top-27 -translate-y-1/2 md:top-29 hidden md:flex'
-                    )}
-                  />
+                {isOverlayNav ? (
                   <CarouselNext
                     variant="ghost"
-                    className={cn(
-                      overlayNavClass,
-                      'right-0 top-27 -translate-y-1/2 md:top-29 md:right-4'
-                    )}
+                    className={cn(overlayNavClass, 'trending-carousel-nav')}
                   />
-                </>
-              )}
+                ) : (
+                  <>
+                    <CarouselPrevious
+                      variant="ghost"
+                      className={cn(
+                        overlayNavClass,
+                        'trending-carousel-nav left-0 right-auto hidden md:flex'
+                      )}
+                    />
+                    <CarouselNext
+                      variant="ghost"
+                      className={cn(overlayNavClass, 'trending-carousel-nav')}
+                    />
+                  </>
+                )}
+              </div>
             </div>
           </Carousel>
         )}
@@ -157,6 +148,13 @@ export function TrendingListItem({
 const INITIAL_ROWS = 3;
 const DESKTOP_COLUMNS = 5;
 const PAGE_SIZE = INITIAL_ROWS * DESKTOP_COLUMNS;
+
+function getGridColumnCount() {
+  if (window.matchMedia('(min-width: 1280px)').matches) return 5;
+  if (window.matchMedia('(min-width: 1024px)').matches) return 4;
+  if (window.matchMedia('(min-width: 48rem)').matches) return 3;
+  return 2;
+}
 
 interface NewReleaseSectionProps {
   movies: Movie[];
@@ -182,7 +180,7 @@ export function NewReleaseSection({ movies, isLoading, isError }: NewReleaseSect
         </motion.h2>
 
         {isLoading && (
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 lg:gap-5">
+          <div className="grid grid-cols-2 gap-5 md:grid-cols-3 md:gap-4 lg:grid-cols-4 xl:grid-cols-5">
             {Array.from({ length: PAGE_SIZE }).map((_, i) => (
               <Skeleton key={i} className="aspect-poster w-full rounded-xl" />
             ))}
@@ -199,7 +197,7 @@ export function NewReleaseSection({ movies, isLoading, isError }: NewReleaseSect
 
         {!isLoading && !isError && movies.length > 0 && (
           <>
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 lg:gap-5">
+            <div className="grid grid-cols-2 gap-5 md:grid-cols-3 md:gap-4 lg:grid-cols-4 xl:grid-cols-5">
               {visibleMovies.map((movie, index) => (
                 <MovieCard key={movie.id} movie={movie} index={index} variant="grid" />
               ))}
@@ -211,7 +209,7 @@ export function NewReleaseSection({ movies, isLoading, isError }: NewReleaseSect
                   type="button"
                   variant="loadMore"
                   size="loadMore"
-                  onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
+                  onClick={() => setVisibleCount((c) => c + getGridColumnCount())}
                 >
                   Load More
                 </Button>

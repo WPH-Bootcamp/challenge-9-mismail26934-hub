@@ -171,7 +171,7 @@ const CarouselPrevious = React.forwardRef<HTMLButtonElement, React.ComponentProp
         variant={variant}
         size={size}
         className={cn(
-          'h-10 w-10 shrink-0 rounded-lg',
+          'shrink-0',
           orientation === 'horizontal' ? '' : 'rotate-90',
           className
         )}
@@ -204,7 +204,7 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<ty
         variant={variant}
         size={size}
         className={cn(
-          'h-10 w-10 shrink-0 rounded-lg',
+          'shrink-0',
           orientation === 'horizontal' ? '' : 'rotate-90',
           className
         )}
@@ -213,14 +213,7 @@ const CarouselNext = React.forwardRef<HTMLButtonElement, React.ComponentProps<ty
         aria-label="Next slide"
         {...props}
       >
-        <img
-          src={arrowIcon}
-          alt=""
-          aria-hidden
-          width={20}
-          height={20}
-          className="h-5 w-5"
-        />
+        <img src={arrowIcon} alt="" aria-hidden width={20} height={20} className="h-5 w-5" />
       </Button>
     );
   }

@@ -28,7 +28,7 @@ const buttonVariants = cva(
         icon: 'h-10 w-10',
         hero: 'h-11 w-full min-w-0 max-w-full gap-3 self-stretch rounded-full px-6 text-sm md:h-13 md:w-230 md:max-w-none md:shrink-0 md:self-auto md:gap-3 md:px-8 md:text-base',
         loadMore:
-          'h-13 w-full max-w-361 gap-2 px-4 text-base leading-6 md:w-230 md:max-w-none',
+          'h-11 w-200 gap-2 px-4 text-base leading-6 md:h-13 md:w-230',
       },
     },
     defaultVariants: {
